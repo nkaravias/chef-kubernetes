@@ -1,0 +1,21 @@
+{
+   "name":"skynet_localdev",
+   "description":"Kitchen CI local environment",
+   "cookbook_versions":{
+   },
+   "json_class":"Chef::Environment",
+   "chef_type":"environment",
+   "default_attributes":{
+      "java":{
+         "install_flavor":"oracle",
+         "jdk_version":"8",
+         "oracle":{
+            "accept_oracle_download_terms":true
+         }
+      },
+      "omc_logstash": {
+      }
+   },
+   "override_attributes":{
+   }
+}
