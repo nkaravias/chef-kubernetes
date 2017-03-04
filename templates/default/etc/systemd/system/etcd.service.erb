@@ -4,22 +4,24 @@ Documentation=https://github.com/coreos
 [Service]
 Type=Notify
 NotifyAccess=all
-ExecStart=/usr/bin/etcd --name local \
- --heartbeat-interval=<%=@heartbeat_interval%> \
- --cert-file=/etc/etcd/kubernetes.pem \
- --key-file=/etc/etcd/kubernetes-key.pem \
- --peer-cert-file=/etc/etcd/kubernetes.pem \
- --peer-key-file=/etc/etcd/kubernetes-key.pem \
- --trusted-ca-file=/etc/etcd/ca.pem \
- --peer-trusted-ca-file=/etc/etcd/ca.pem \
- --initial-advertise-peer-urls https://den00hmj.us.oracle.com:2380 \
- --listen-peer-urls https://den00hmj.us.oracle.com:2380 \
- --listen-client-urls https://den00hmj.us.oracle.com:2379 \
- --advertise-client-urls https://den00hmj.us.oracle.com:2379 \
- --initial-cluster-token etcd-cluster-0 \
- --initial-cluster den00hmj=https://den00hmj.us.oracle.com:2380,den00hmg=https://den00hmg.us.oracle.com:2380,den00hmi=https://den00hmi.us.oracle.com:2380 \
- --initial-cluster-state new \
- --data-dir=/var/lib/etcd
+ExecStart=/usr/bin/etcd \
+<%= render_str(@etcd_config['heartbeat-interval'],' --heartbeat-interval',' \\','=') -%>
+<%= render_str(@etcd_config['cert-file'],' --cert-file',' \\','=') -%>
+<%= render_str(@etcd_config['key-file'],' --key-file',' \\','=') -%>
+<%= render_str(@etcd_config['peer-cert-file'],' --peer-cert-file',' \\','=') -%>
+<%= render_str(@etcd_config['peer-key-file'],' --peer-key-file',' \\','=') -%>
+<%= render_str(@etcd_config['trusted-ca-file'],' --trusted-ca-file',' \\','=') -%>
+<%= render_str(@etcd_config['peer-trusted-ca-file'],' --peer-trusted-ca-file',' \\','=') -%>
+<%= render_str(@etcd_config['initial-advertise-peer-urls'],' --initial-advertise-peer-urls',' \\','=') -%>
+<%= render_str(@etcd_config['listen-peer-urls'],' --listen-peer-urls',' \\','=') -%>
+<%= render_str(@etcd_config['listen-client-urls'],' --listen-client-urls',' \\','=') -%>
+<%= render_str(@etcd_config['advertise-client-urls'],' --advertise-client-urls',' \\','=') -%>
+<%= render_str(@etcd_config['initial-cluster-token'],' --initial-cluster-token',' \\','=') -%>
+%= render_str(@etcd_config['initial-cluster'],' --initial-cluster',' \\','=') -%>
+<%= render_str(@etcd_config['initial-cluster-state'],' --initial-cluster-state',' \\','=') -%>
+<%= render_str(@etcd_config['data-dir'],' --data-dir',' \\','=') -%>
+<%= render_str(@etcd_config['name'],' --name','','=') -%>
+
 Restart=on-failure
 RestartSec=5
 [Install]

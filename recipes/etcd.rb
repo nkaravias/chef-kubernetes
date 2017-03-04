@@ -6,7 +6,6 @@
 #
 # All rights reserved - Do Not Redistribute
 #
-#version_major_minor = node['skynet']['etcd']['version'].match(/^[0-9]\.[0-9]*/)
 yum_repository "oradev_repository" do
   description "oradev repository"
   baseurl node['skynet']['yum']['oradev']['base_url']
@@ -27,8 +26,8 @@ template '/etc/systemd/system/etcd.service' do
   mode '0644'
   helpers(Skynet::SkynetHelper)
   cookbook'skynet'
-  variables(:heartbeat_interval => node['skynet']['etcd']['heartbeat-interval'])
-  notifies :restart, "service[etcd]"
+  variables(:etcd_config => node['skynet']['etcd'])
+  notifies :restart, "service[etcd]", :delayed
 end
 
 service 'etcd' do
