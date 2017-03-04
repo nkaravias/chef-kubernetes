@@ -19,6 +19,11 @@ yum_package 'etcd-elq' do
   action :install
 end
 
+execute 'systemctl daemon-reload' do
+  command 'systemctl daemon-reload'
+  action :nothing
+end
+
 template '/etc/systemd/system/etcd.service' do
   source 'etc/systemd/system/etcd.service.erb'
   owner node['skynet']['etcd']['user'] 
@@ -27,6 +32,7 @@ template '/etc/systemd/system/etcd.service' do
   helpers(Skynet::SkynetHelper)
   cookbook'skynet'
   variables(:etcd_config => node['skynet']['etcd'])
+  notifies :run, "execute[systemctl daemon-reload]", :delayed
   notifies :restart, "service[etcd]", :delayed
 end
 

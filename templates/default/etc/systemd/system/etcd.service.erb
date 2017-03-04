@@ -17,7 +17,7 @@ ExecStart=/usr/bin/etcd \
 <%= render_str(@etcd_config['listen-client-urls'],' --listen-client-urls',' \\','=') -%>
 <%= render_str(@etcd_config['advertise-client-urls'],' --advertise-client-urls',' \\','=') -%>
 <%= render_str(@etcd_config['initial-cluster-token'],' --initial-cluster-token',' \\','=') -%>
-%= render_str(@etcd_config['initial-cluster'],' --initial-cluster',' \\','=') -%>
+<%= render_str(@etcd_config['initial-cluster'],' --initial-cluster',' \\','=') -%>
 <%= render_str(@etcd_config['initial-cluster-state'],' --initial-cluster-state',' \\','=') -%>
 <%= render_str(@etcd_config['data-dir'],' --data-dir',' \\','=') -%>
 <%= render_str(@etcd_config['name'],' --name','','=') -%>
