@@ -12,5 +12,12 @@ module Skynet
     return nil
    end
 
+   def get_etcd_url(host='localhost',port=2379,ssl=false)
+     unless ssl==true
+       return "http://#{host}:#{port}"
+     end
+     return "https://#{host}:#{port}" 
+   end
+
   end
 end

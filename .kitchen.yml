@@ -27,3 +27,4 @@ suites:
     run_list:
       - recipe[skynet::etcd]
       - role[etcd-kitchen-ssl]
+      - role[sky-etcd-dev-ssl]

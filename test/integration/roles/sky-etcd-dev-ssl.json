@@ -1,6 +1,6 @@
 {
-  "name": "etcd-kitchen-ssl",
-  "description": "Enable ssl for test kitchen local use case",
+  "name": "sky-etcd-dev-ssl",
+  "description": "Sky etcd DEV configuration",
   "json_class": "Chef::Role",
   "default_attributes": {
     "skynet": {
@@ -32,7 +32,7 @@
         "peer-key-file":"/etc/etcd/etcd-server-key.pem",
         "trusted-ca-file":"/etc/etcd/sky-ca.pem",
         "peer-trusted-ca-file":"/etc/etcd/sky-ca.pem",
-        "initial-cluster":"default-chef12=https://default-chef12:2380"
+        "initial-cluster":"den00hmj=https://den00hmj.us.oracle.com:2380,den00hmg=https://den00hmg.us.oracle.com:2380,den00hmi=https://den00hmi.us.oracle.com:2380"
       }
     }
   },
