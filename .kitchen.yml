@@ -12,14 +12,11 @@ provisioner:
      environment: skynet_localdev
 platforms:
   - name: chef12
-#    driver_config:
-#      vm_hostname: default-oel65-chef-java
     driver:
       customize:
         memory: 2048
         cpus: 2
       vm_hostname: default-chef12
-#      box: oel72-vanilla
       box: oel71-default
     transport:
       max_ssh_sessions: 1
@@ -29,3 +26,4 @@ suites:
   - name: default
     run_list:
       - recipe[skynet::etcd]
+      - role[etcd-kitchen-ssl]

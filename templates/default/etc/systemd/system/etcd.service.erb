@@ -2,6 +2,8 @@
 Description=etcd
 Documentation=https://github.com/coreos
 [Service]
+<%= render_str(@etcd_config['user'],'User','','=') -%>
+<%= render_str(@etcd_config['group'],'Group','','=') -%>
 Type=Notify
 NotifyAccess=all
 ExecStart=/usr/bin/etcd \
@@ -12,15 +14,15 @@ ExecStart=/usr/bin/etcd \
 <%= render_str(@etcd_config['peer-key-file'],' --peer-key-file',' \\','=') -%>
 <%= render_str(@etcd_config['trusted-ca-file'],' --trusted-ca-file',' \\','=') -%>
 <%= render_str(@etcd_config['peer-trusted-ca-file'],' --peer-trusted-ca-file',' \\','=') -%>
-<%= render_str(@etcd_config['initial-advertise-peer-urls'],' --initial-advertise-peer-urls',' \\','=') -%>
-<%= render_str(@etcd_config['listen-peer-urls'],' --listen-peer-urls',' \\','=') -%>
-<%= render_str(@etcd_config['listen-client-urls'],' --listen-client-urls',' \\','=') -%>
-<%= render_str(@etcd_config['advertise-client-urls'],' --advertise-client-urls',' \\','=') -%>
-<%= render_str(@etcd_config['initial-cluster-token'],' --initial-cluster-token',' \\','=') -%>
-<%= render_str(@etcd_config['initial-cluster'],' --initial-cluster',' \\','=') -%>
-<%= render_str(@etcd_config['initial-cluster-state'],' --initial-cluster-state',' \\','=') -%>
+<%= render_str(@etcd_config['initial-advertise-peer-urls'],' --initial-advertise-peer-urls',' \\',' ') -%>
+<%= render_str(@etcd_config['listen-peer-urls'],' --listen-peer-urls',' \\',' ') -%>
+<%= render_str(@etcd_config['listen-client-urls'],' --listen-client-urls',' \\',' ') -%>
+<%= render_str(@etcd_config['advertise-client-urls'],' --advertise-client-urls',' \\',' ') -%>
+<%= render_str(@etcd_config['initial-cluster-token'],' --initial-cluster-token',' \\',' ') -%>
+<%= render_str(@etcd_config['initial-cluster'],' --initial-cluster',' \\',' ') -%>
+<%= render_str(@etcd_config['initial-cluster-state'],' --initial-cluster-state',' \\',' ') -%>
 <%= render_str(@etcd_config['data-dir'],' --data-dir',' \\','=') -%>
-<%= render_str(@etcd_config['name'],' --name','','=') -%>
+<%= render_str(@etcd_config['name'],' --name','',' ') -%>
 
 Restart=on-failure
 RestartSec=5

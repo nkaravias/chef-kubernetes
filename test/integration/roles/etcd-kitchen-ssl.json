@@ -1,0 +1,52 @@
+{
+  "name": "etcd-kitchen-ssl",
+  "description": "Enable ssl for test kitchen local use case",
+  "json_class": "Chef::Role",
+  "default_attributes": {
+    "skynet": {
+      "etcd": {
+        "certificate_data_bag_info": [
+          {
+            "key":"etcd.server.cert",
+            "dbag_name":"certificates",
+            "dbag_item":"skynet_kitchen",
+            "path":"/etc/etcd/etcd-server.pem"
+          },
+          {
+            "key":"etcd.server.key",
+            "dbag_name":"certificates",
+            "dbag_item":"skynet_kitchen",
+            "path":"/etc/etcd/etcd-server-key.pem"
+          },
+          {
+            "key":"ca.cert",
+            "dbag_name":"certificates",
+            "dbag_item":"skynet_kitchen",
+            "path":"/etc/etcd/sky-ca.pem"
+          }
+        ],
+        "cert-file":"/etc/etcd/etcd-server.pem",
+        "key-file":"/etc/etcd/etcd-server-key.pem",
+        "peer-cert-file":"/etc/etcd/etcd-server.pem",
+        "peer-key-file":"/etc/etcd/etcd-server-key.pem",
+        "trusted-ca-file":"/etc/etcd/sky-ca.pem",
+        "peer-trusted-ca-file":"/etc/etcd/sky-ca.pem",
+        "initial-advertise-peer-urls":"https://localhost:2380",
+        "listen-peer-urls":"https://localhost:2380",
+        "listen-client-urls":"https://localhost:2379",
+        "advertise-client-urls":"https://localhost:2379",
+        "initial-cluster":"localnode=https://localhost:2380"
+      }
+    }
+  },
+  "override_attributes": {
+
+  },
+  "chef_type": "role",
+  "run_list": [
+
+  ],
+  "env_run_lists": {
+
+  }
+}

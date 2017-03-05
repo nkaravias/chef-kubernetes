@@ -5,6 +5,8 @@ default['skynet']['yum']['oradev']['base_url']='http://den00ake.us.oracle.com/re
 
 default['skynet']['etcd']['user']='etcd'
 default['skynet']['etcd']['group']='etcd'
+default['skynet']['etcd']['certificate_data_bag_info']=[]
+#e.g ::['certificate_data_bag_info']=[{ key: 'server.cert', dbag_name: 'certificates', dbag_item: 'skynet_etcd', path: '/tmp/cert.pem'  }]
 default['skynet']['etcd']['peer_port']=2380
 default['skynet']['etcd']['client_port']=2379
 default['skynet']['etcd']['name']='localnode'
@@ -23,7 +25,3 @@ default['skynet']['etcd']['initial-cluster-token']='etcd-cluster-0'
 default['skynet']['etcd']['initial-cluster']="localnode=http://localhost:2380"
 default['skynet']['etcd']['initial-cluster-state']='new'
 default['skynet']['etcd']['data-dir']='/var/lib/etcd'
-
-=begin
- --initial-cluster den00hmj=https://den00hmj.us.oracle.com:2380,den00hmg=https://den00hmg.us.oracle.com:2380,den00hmi=https://den00hmi.us.oracle.com:2380 \
-=end
