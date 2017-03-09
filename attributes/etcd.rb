@@ -1,10 +1,6 @@
-default['skynet']['etcd']['version']='3.1.2-1'
-default['skynet']['yum']['oradev']['gpgcheck']=false
-default['skynet']['yum']['oradev']['gpg_key_url']='file:///etc/pki/rpm-gpg/RPM-GPG-KEY-oracle'
-default['skynet']['yum']['oradev']['base_url']='http://den00ake.us.oracle.com/repodata'
-
 default['skynet']['etcd']['user']='etcd'
 default['skynet']['etcd']['group']='etcd'
+default['skynet']['etcd']['version']='3.1.2-1'
 default['skynet']['etcd']['certificate_data_bag_info']=[]
 #e.g ::['certificate_data_bag_info']=[{ key: 'server.cert', dbag_name: 'certificates', dbag_item: 'skynet_etcd', path: '/tmp/cert.pem'  }]
 default['skynet']['etcd']['peer_port']=2380

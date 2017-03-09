@@ -1,0 +1,28 @@
+[Unit]
+Description=Kubernetes API Server
+Documentation=https://github.com/GoogleCloudPlatform/kubernetes
+
+[Service]
+ExecStart=/usr/bin/kube-apiserver \
+<%= render_str(@kube_master_config['api']['admission-control'],' --admission-control',' \\','=') -%>
+<%= render_str(@kube_master_config['api']['allow-privileged'],' --allow-privileged',' \\','=') -%>
+<%= render_str(@kube_master_config['api']['apiserver-count'],'--apiserver-count',' \\','=') -%>
+<%= render_str(@kube_master_config['api']['authorization-mode'],'--authorization-mode',' \\','=') -%>
+<%= render_str(@kube_master_config['api']['authorization-policy-file'],'--authorization-policy-file',' \\','=') -%>
+<%= render_str(@kube_master_config['api']['bind-address'],'--bind-address',' \\','=') -%>
+<%= render_str(@kube_master_config['api']['enable-swagger-ui'],'--enable-swagger-ui',' \\','=') -%>
+<%= render_str(@kube_master_config['api']['etcd-cafile'],'--etcd-cafile',' \\','=') -%>
+<%= render_str(@kube_master_config['api']['insecure-bind-address'],'--insecure-bind-address',' \\','=') -%>
+<%= render_str(@kube_master_config['api']['kubelet-certificate-authority'],'--kubelet-certificate-authority',' \\','=') -%>
+<%= render_str(@kube_master_config['api']['etcd-servers'],'--etcd-servers',' \\','=') -%>
+<%= render_str(@kube_master_config['api']['service-account-key-file'],'--service-account-key-file',' \\','=') -%>
+<%= render_str(@kube_master_config['api']['service-cluster-ip-range'],'--service-cluster-ip-range',' \\','=') -%>
+<%= render_str(@kube_master_config['api']['tls-cert-file'],'--tls-cert-file',' \\','=') -%>
+<%= render_str(@kube_master_config['api']['tls-private-key-file'],'--tls-private-key-file',' \\','=') -%>
+<%= render_str(@kube_master_config['api']['token-auth-file'],'--token-auth-file',' \\','=') -%>
+ --v=2
+#Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

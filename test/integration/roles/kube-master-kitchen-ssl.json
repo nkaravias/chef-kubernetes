@@ -1,0 +1,49 @@
+{
+  "name": "kube-master-kitchen-ssl",
+  "description": "Enable ssl for test kitchen local use case",
+  "json_class": "Chef::Role",
+  "default_attributes": {
+    "skynet": {
+      "kubernetes": {
+	  "master": {
+	    "certificate_data_bag_info": [
+	      {
+		"key":"etcd.server.cert",
+		"dbag_name":"certificates",
+		"dbag_item":"skynet_kitchen",
+		"path":"/etc/kubernetes/sky-kubernetes.pem"
+	      },
+	      {
+		"key":"etcd.server.key",
+		"dbag_name":"certificates",
+		"dbag_item":"skynet_kitchen",
+		"path":"/etc/kubernetes/sky-kubernetes-key.pem"
+	      },
+	      {
+		"key":"ca.cert",
+		"dbag_name":"certificates",
+		"dbag_item":"skynet_kitchen",
+		"path":"/etc/kubernetes/sky-ca.pem"
+	      },
+	      {
+		"key":"ca.key",
+		"dbag_name":"certificates",
+		"dbag_item":"skynet_kitchen",
+		"path":"/etc/kubernetes/sky-ca-key.pem"
+	      }
+	    ]
+       }
+    }
+  },
+  "override_attributes": {
+
+  },
+  "chef_type": "role",
+  "run_list": [
+
+  ],
+  "env_run_lists": {
+
+  }
+}
+}

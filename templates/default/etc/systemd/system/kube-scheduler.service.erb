@@ -1,0 +1,16 @@
+[Unit]
+Description=Kubernetes Scheduler
+Documentation=https://github.com/GoogleCloudPlatform/kubernetes
+After=kube-apiserver.service
+Wants=kube-apiserver.service
+
+[Service]
+ExecStart=/usr/bin/kube-scheduler \
+<%= render_str(@kube_master_config['scheduler']['leader-elect'],' --leader-elect',' \\','=') -%>
+<%= render_str(@kube_master_config['scheduler']['master'],' --master',' \\','=') -%>
+ --v=2
+#Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,95 @@
+#
+# Cookbook Name:: skynet
+# Recipe:: default
+#
+# Copyright 2017, YOUR_COMPANY_NAME
+#
+# All rights reserved - Do Not Redistribute
+#
+::Chef::Recipe.send(:include,Skynet::SkynetHelper)
+
+yum_repository "oradev_repository" do
+  description "oradev repository"
+  baseurl node['skynet']['yum']['oradev']['base_url']
+  gpgkey node['skynet']['yum']['oradev']['gpg_key_url']
+  gpgcheck node['skynet']['yum']['oradev']['gpgcheck']
+  action :create
+end
+
+yum_package 'kubernetes-master-elq' do
+  version node['skynet']['kubernetes']['version']
+  action :install
+end
+
+if node['skynet']['kubernetes']['master']['certificate_data_bag_info'].empty?
+ Chef::Log.info("No certificate information is set - Skipping certificate rendering on this node")
+else 
+  node['skynet']['kubernetes']['master']['certificate_data_bag_info'].each do |kube_cert|
+    dbag = kube_cert['dbag_name']
+    dbag_item = kube_cert['dbag_item']
+    dbag_key = kube_cert['key']
+    cert_path = kube_cert['path']
+    Chef::Log.info("Attempting to load #{dbag}::#{dbag_item}::#{dbag_key}")
+    dbag_obj = Chef::EncryptedDataBagItem.load(dbag, dbag_item)
+    file dbag_key do
+      path cert_path
+      owner node['skynet']['kubernetes']['user']
+      group node['skynet']['kubernetes']['group']
+      mode '0700'
+      content Base64.decode64(dbag_obj[dbag_key])      
+    end
+  end
+end
+
+# if the attributes for the controller or scheduler 'master' are empty override with http://fqdn:['insecure-api-port']
+# defaults should be emtpy and overriden if needed by a role
+%W{ scheduler cmanager }.each do |svc|
+ if node['skynet']['kubernetes']['master'][svc]['master'].empty?
+    master_uri="http://#{node['fqdn']}:#{node['skynet']['kubernetes']['master']['api']['insecure-port']}"
+    Chef::Log.info("The master attribute is not set for the #{svc}: overriding with #{master_uri}")
+    node.override['skynet']['kubernetes']['master'][svc]['master']=master_uri
+  end
+end
+
+execute 'systemctl daemon-reload' do
+  command 'systemctl daemon-reload'
+  action :nothing
+end
+
+%W{ kube-apiserver kube-controller-manager kube-scheduler }.each do |k8s_svc|
+  template "/etc/systemd/system/#{k8s_svc}.service" do
+    source "etc/systemd/system/#{k8s_svc}.service.erb"
+    owner node['skynet']['kubernetes']['user'] 
+    group node['skynet']['kubernetes']['group']
+    mode '0644'
+    helpers(Skynet::SkynetHelper)
+    cookbook 'skynet'
+    variables(:kube_master_config => node['skynet']['kubernetes']['master'])
+    notifies :run, "execute[systemctl daemon-reload]", :delayed
+    notifies :restart, "service[#{k8s_svc}]", :delayed
+  end
+
+  service k8s_svc do
+    action [:enable]
+  end
+end
+
+template ::File.join(node['skynet']['kubernetes']['master']['data_path'],'token.csv') do
+  source "var/lib/kubernetes/token.csv.erb"
+  mode "0700"
+  helpers(Skynet::SkynetHelper)
+  cookbook 'skynet'
+  variables(:kube_master_config => node['skynet']['kubernetes']['master'])
+  notifies :restart, "service[kube-apiserver]", :delayed
+end
+
+template ::File.join(node['skynet']['kubernetes']['master']['data_path'],'authorization-policy.jsonl') do
+  source "var/lib/kubernetes/authorization-policy.jsonl.erb"
+  mode "0700"
+  helpers(Skynet::SkynetHelper)
+  cookbook 'skynet'
+  variables(:kube_master_config => node['skynet']['kubernetes']['master'])
+  notifies :restart, "service[kube-apiserver]", :delayed
+end
+
+

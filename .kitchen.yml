@@ -24,7 +24,10 @@ platforms:
       require_chef_omnibus: 12.19.36
 suites:
   - name: default
+    verifier:
+      name: inspec
     run_list:
       - recipe[skynet::etcd]
+      - recipe[skynet::kubernetes_master]
       - role[etcd-kitchen-ssl]
-      - role[sky-etcd-dev-ssl]
+      - role[kube-master-kitchen-ssl]

@@ -1,0 +1,24 @@
+[Unit]
+Description=Kubernetes Controller Manager
+Documentation=https://github.com/GoogleCloudPlatform/kubernetes
+After=kube-apiserver.service
+Wants=kube-apiserver.service
+
+[Service]
+ExecStart=/usr/bin/kube-controller-manager \
+<%= render_str(@kube_master_config['cmanager']['allocate-node-cidrs'],' --allocate-node-cidrs',' \\','=') -%>
+<%= render_str(@kube_master_config['cmanager']['cluster-cidr'],' --cluster-cidr',' \\','=') -%>
+<%= render_str(@kube_master_config['cmanager']['cluster-name'],' --cluster-name',' \\','=') -%>
+<%= render_str(@kube_master_config['cmanager']['leader-elect'],' --leader-elect',' \\','=') -%>
+<%= render_str(@kube_master_config['cmanager']['master'],' --master',' \\','=') -%>
+<%= render_str(@kube_master_config['cmanager']['root-ca-file'],' --root-ca-file',' \\','=') -%>
+<%= render_str(@kube_master_config['cmanager']['service-account-private-key-file'],' --service-account-private-key-file',' \\','=') -%>
+<%= render_str(@kube_master_config['cmanager']['service-cluster-ip-range'],' --service-cluster-ip-range',' \\','=') -%>
+<%= render_str(@kube_master_config['cmanager']['cluster-signing-cert-file'],' --cluster-signing-cert-file',' \\','=') -%>
+<%= render_str(@kube_master_config['cmanager']['cluster-signing-key-file'],' --cluster-signing-key-file',' \\','=') -%>
+ --v=2
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target

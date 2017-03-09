@@ -57,6 +57,7 @@ else
     dbag_item = etcd_cert['dbag_item']
     dbag_key = etcd_cert['key']
     cert_path = etcd_cert['path']
+    Chef::Log.info("Attempting to load #{dbag}::#{dbag_item}::#{dbag_key}")
     dbag_obj = Chef::EncryptedDataBagItem.load(dbag, dbag_item)
     file dbag_key do
       path cert_path
