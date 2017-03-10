@@ -51,6 +51,44 @@ end
   end
 end
 
+#If api['authorization-policy-file'] is set load the values from a data bag and render the file 
+# If api['token-auth-file'] is set load the values from a data bag and render the file 
+[{dbag_info: "auth_policy_data_bag_info", config_attr: "authorization-policy-file"},
+{dbag_info: "token_data_bag_info", config_attr: "token-auth-file"}].collect { |cfg|
+   unless node['skynet']['kubernetes']['master']['api']["#{cfg[:config_attr]}"].empty?
+    if node['skynet']['kubernetes']['master']["#{cfg[:dbag_info]}"].empty?
+      Chef::Log.error("Missing data bag configuration. Check node['skynet']['kubernetes']['master'][#{cfg[:dbag_info]}]")
+      raise "node['skynet']['kubernetes']['master'][#{cfg[:dbag_info]}].empty?"
+    else
+      dbag = node['skynet']['kubernetes']['master'][cfg[:dbag_info]].keys.first
+      dbag_item = node['skynet']['kubernetes']['master'][cfg[:dbag_info]][dbag]
+      Chef::Log.info("Attempting to load #{dbag}::#{dbag_item} - Attribute #{cfg[:config_attr]} is set") 
+      if cfg[:config_attr] == 'token-auth-file' 
+	mappings = Chef::EncryptedDataBagItem.load(dbag, dbag_item)['token_mappings']
+        template_file='token.csv.erb'  
+      elsif cfg[:config_attr] == 'authorization-policy-file'
+        mappings = Chef::EncryptedDataBagItem.load(dbag, dbag_item)['policies']
+        template_file='authorization-policy.jsonl.erb'
+      else
+        raise "unsupported value: #{cfg}"
+      end
+      template node['skynet']['kubernetes']['master']['api']["#{cfg[:config_attr]}"] do
+        source ::File.join("var/lib/kubernetes",template_file)
+        owner node['skynet']['kubernetes']['user']
+        group node['skynet']['kubernetes']['group']
+        mode "0700"
+        helpers(Skynet::SkynetHelper)
+        cookbook 'skynet'
+        variables(:mappings => mappings)
+        notifies :run, "execute[systemctl daemon-reload]", :delayed
+        notifies :restart, "service[kube-apiserver]", :delayed
+        notifies :restart, "service[kube-controller-manager]", :delayed
+        notifies :restart, "service[kube-scheduler]", :delayed
+      end
+    end
+  end
+}
+
 execute 'systemctl daemon-reload' do
   command 'systemctl daemon-reload'
   action :nothing
@@ -73,23 +111,3 @@ end
     action [:enable]
   end
 end
-
-template ::File.join(node['skynet']['kubernetes']['master']['data_path'],'token.csv') do
-  source "var/lib/kubernetes/token.csv.erb"
-  mode "0700"
-  helpers(Skynet::SkynetHelper)
-  cookbook 'skynet'
-  variables(:kube_master_config => node['skynet']['kubernetes']['master'])
-  notifies :restart, "service[kube-apiserver]", :delayed
-end
-
-template ::File.join(node['skynet']['kubernetes']['master']['data_path'],'authorization-policy.jsonl') do
-  source "var/lib/kubernetes/authorization-policy.jsonl.erb"
-  mode "0700"
-  helpers(Skynet::SkynetHelper)
-  cookbook 'skynet'
-  variables(:kube_master_config => node['skynet']['kubernetes']['master'])
-  notifies :restart, "service[kube-apiserver]", :delayed
-end
-
-

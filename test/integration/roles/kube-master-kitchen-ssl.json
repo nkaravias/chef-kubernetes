@@ -6,6 +6,12 @@
     "skynet": {
       "kubernetes": {
 	  "master": {
+            "token_data_bag_info": {
+              "skynet": "token_kitchen"
+            },
+            "auth_policy_data_bag_info": {
+              "skynet": "authorization_policy_kitchen"
+            },
 	    "certificate_data_bag_info": [
 	      {
 		"key":"etcd.server.cert",
@@ -31,8 +37,12 @@
 		"dbag_item":"skynet_kitchen",
 		"path":"/etc/kubernetes/sky-ca-key.pem"
 	      }
-	    ]
+	    ],
+       "api": { 
+         "authorization-policy-file":"/var/lib/kubernetes/authorization-policy.jsonl",
+         "token-auth-file":"/var/lib/kubernetes/token.csv"
        }
+     }
     }
   },
   "override_attributes": {
