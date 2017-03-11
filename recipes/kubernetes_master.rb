@@ -41,11 +41,17 @@ else
   end
 end
 
-# if the attributes for the controller or scheduler 'master' are empty override with http://fqdn:['insecure-api-port']
+# if the attributes for the controller or scheduler 'master' are empty 
+#   if ::api[insecure-bind-address] is localhost or 127.0.0.1 override with http://127.0.0.1 
+#   Otherwise override with http://fqdn:['insecure-api-port']
 # defaults should be emtpy and overriden if needed by a role
 %W{ scheduler cmanager }.each do |svc|
  if node['skynet']['kubernetes']['master'][svc]['master'].empty?
-    master_uri="http://#{node['fqdn']}:#{node['skynet']['kubernetes']['master']['api']['insecure-port']}"
+    if ['127.0.0.1', 'localhost'].include? node['skynet']['kubernetes']['master']['api']['insecure-bind-address'] 
+      master_uri="http://#{node['skynet']['kubernetes']['master']['api']['insecure-bind-address']}:#{node['skynet']['kubernetes']['master']['api']['insecure-port']}"
+    else
+      master_uri="http://#{node['fqdn']}:#{node['skynet']['kubernetes']['master']['api']['insecure-port']}"
+    end
     Chef::Log.info("The master attribute is not set for the #{svc}: overriding with #{master_uri}")
     node.override['skynet']['kubernetes']['master'][svc]['master']=master_uri
   end
