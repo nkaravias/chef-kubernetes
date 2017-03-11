@@ -8,6 +8,7 @@ default['skynet']['etcd']['client_port']=2379
 default['skynet']['etcd']['tls_enabled']=false
 default['skynet']['etcd']['name']=''#localhost'#'localnode'
 default['skynet']['etcd']['heartbeat-interval']=200
+default['skynet']['etcd']['election-timeout']=1000
 default['skynet']['etcd']['cert-file']=''
 default['skynet']['etcd']['key-file']=''
 default['skynet']['etcd']['peer-cert-file']=''

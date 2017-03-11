@@ -8,6 +8,7 @@ Type=Notify
 NotifyAccess=all
 ExecStart=/usr/bin/etcd \
 <%= render_str(@etcd_config['heartbeat-interval'],' --heartbeat-interval',' \\','=') -%>
+<%= render_str(@etcd_config['election-timeout'],' --election-timeout',' \\','=') -%>
 <%= render_str(@etcd_config['cert-file'],' --cert-file',' \\','=') -%>
 <%= render_str(@etcd_config['key-file'],' --key-file',' \\','=') -%>
 <%= render_str(@etcd_config['peer-cert-file'],' --peer-cert-file',' \\','=') -%>
