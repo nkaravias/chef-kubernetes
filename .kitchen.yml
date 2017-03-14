@@ -27,7 +27,10 @@ suites:
     verifier:
       name: inspec
     run_list:
+      - recipe[skynet_kitchen_helper::uek4]
       - recipe[skynet::etcd]
       - recipe[skynet::kubernetes_master]
+      - recipe[skynet::kubernetes_worker]
       - role[etcd-kitchen-ssl]
       - role[kube-master-kitchen-ssl]
+

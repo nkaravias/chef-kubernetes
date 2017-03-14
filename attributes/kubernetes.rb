@@ -2,6 +2,9 @@ default['skynet']['kubernetes']['user']='root'
 default['skynet']['kubernetes']['group']='root'
 
 default['skynet']['kubernetes']['version']='1.5.2-1'
+default['skynet']['docker']['version']='1.12.6-1.el7'
+
+# Master configuration
 default['skynet']['kubernetes']['master']['certificate_data_bag_info']=[]
 default['skynet']['kubernetes']['master']['token_data_bag_info']={}
 default['skynet']['kubernetes']['master']['auth_policy_data_bag_info']={}
@@ -44,4 +47,10 @@ default['skynet']['kubernetes']['master']['cmanager'].tap do |cmanager|
   cmanager['service-cluster-ip-range']='172.16.0.0/16'
   cmanager['cluster-signing-cert-file']='/etc/kubernetes/sky-ca.pem'
   cmanager['cluster-signing-key-file']='/etc/kubernetes/sky-ca-key.pem'
+end
+
+# Worker configuration
+default['skynet']['kubernetes']['worker']['flanneld'].tap do |flanneld|
+  flanneld['etcd_uri']="https://default-chef12:2379"
+  flanneld['etcd_key']='/skynet/network'
 end
