@@ -1,29 +1,23 @@
 {
-  "name": "kube-master-kitchen-ssl",
+  "name": "kube-worker-kitchen-ssl",
   "description": "Enable ssl for test kitchen local use case",
   "json_class": "Chef::Role",
   "default_attributes": {
     "skynet": {
       "kubernetes": {
-	  "master": {
-            "token_data_bag_info": {
-              "skynet": "token_kitchen"
-            },
-            "auth_policy_data_bag_info": {
-              "skynet": "authorization_policy_kitchen"
-            },
+	  "worker": {
 	    "certificate_data_bag_info": [
 	      {
-		"key":"apiserver.ssl.cert",
+		"key":"kubelet.ssl.cert",
 		"dbag_name":"certificates",
 		"dbag_item":"skynet_kitchen",
-		"path":"/etc/kubernetes/sky-kubernetes.pem"
+		"path":"/etc/kubernetes/sky-kubelet.pem"
 	      },
 	      {
-		"key":"apiserver.ssl.key",
+		"key":"kubelet.ssl.key",
 		"dbag_name":"certificates",
 		"dbag_item":"skynet_kitchen",
-		"path":"/etc/kubernetes/sky-kubernetes-key.pem"
+		"path":"/etc/kubernetes/sky-kubelet-key.pem"
 	      },
 	      {
 		"key":"ca.cert",
@@ -44,10 +38,10 @@
 		"path":"/etc/pki/ca-trust/source/anchors/sky-ca.pem"
 	      }
 	    ],
-       "api": { 
-         "authorization-policy-file":"/var/lib/kubernetes/authorization-policy.jsonl",
-         "token-auth-file":"/var/lib/kubernetes/token.csv"
-       }
+          "flanneld": {
+            "etcd_uri":"https://default-chef12:2379",
+            "etcd_key":"/skynet/kitchen/network"
+          }
      }
     }
   },

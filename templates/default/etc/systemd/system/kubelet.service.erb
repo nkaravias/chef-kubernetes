@@ -1,0 +1,27 @@
+[Unit]
+Description=Kubernetes Kubelet
+Documentation=https://github.com/GoogleCloudPlatform/kubernetes
+After=docker.service
+Requires=docker.service
+
+[Service]
+ExecStart=/usr/bin/kubelet \
+<%= render_str(@kube_worker_config['kubelet']['allow-privileged'],' --allow-privileged',' \\','=') -%>
+<%= render_str(@kube_worker_config['kubelet']['cluster-dns'],' --cluster-dns',' \\','=') -%>
+<%= render_str(@kube_worker_config['kubelet']['cluster-domain'],' --cluster-domain',' \\','=') -%>
+<%= render_str(@kube_worker_config['kubelet']['container-runtime'],' --container-runtime',' \\','=') -%>
+<%= render_str(@kube_worker_config['kubelet']['docker'],' --docker',' \\','=') -%>
+<%= render_str(@kube_worker_config['kubelet']['kubeconfig'],' --kubeconfig',' \\','=') -%>
+<%= render_str(@kube_worker_config['kubelet']['cert-dir'],' --cert-dir',' \\','=') -%>
+<%= render_str(@kube_worker_config['kubelet']['tls-cert-file'],' --tls-cert-file',' \\','=') -%>
+<%= render_str(@kube_worker_config['kubelet']['tls-private-key-file'],' --tls-private-key-file',' \\','=') -%>
+<%= render_str(@kube_worker_config['kubelet']['client-ca-file'],' --client-ca-file',' \\','=') -%>
+<%= render_str(@kube_worker_config['kubelet']['serialize-image-pulls'],' --serialize-image-pulls',' \\','=') -%>
+--v=2
+
+#Restart=on-failure
+#RestartSec=5
+
+[Install]
+
+WantedBy=multi-user.target

@@ -2,12 +2,15 @@
 driver:
   name: vagrant
 
+verifier:
+  name: inspec
+
 provisioner:
   name: chef_zero
   environments_path: "test/integration/environments"
   roles_path: "test/integration/roles"
   data_bags_path: "test/integration/data_bags"
-  encrypted_data_bag_secret_key_path: "test/integration/default/encrypted_data_bag_secret"
+  encrypted_data_bag_secret_key_path: "test/integration/encrypted_data_bag_secret"
   client_rb:
      environment: skynet_localdev
 platforms:
@@ -23,14 +26,35 @@ platforms:
     provisioner:
       require_chef_omnibus: 12.19.36
 suites:
-  - name: default
+  - name: etcd
+    run_list:
+      - recipe[skynet::etcd]
+      - role[etcd-kitchen-ssl]
     verifier:
-      name: inspec
+      inspec_tests:
+        - path: test/integration/default/etcd/default_spec.rb
+  - name: master
+    run_list:
+      - recipe[skynet::etcd]
+      - recipe[skynet::kubernetes_master]
+      - role[etcd-kitchen-ssl]
+      - role[kube-master-kitchen-ssl]
+    verifier:
+      inspec_tests:
+        - path: test/integration/default/etcd/default_spec.rb
+        - path: test/integration/default/kubernetes/master_spec.rb
+  - name: full
     run_list:
       - recipe[skynet_kitchen_helper::uek4]
       - recipe[skynet::etcd]
       - recipe[skynet::kubernetes_master]
       - recipe[skynet::kubernetes_worker]
+      - recipe[skynet::trust_ca]
       - role[etcd-kitchen-ssl]
       - role[kube-master-kitchen-ssl]
-
+      - role[kube-worker-kitchen-ssl]
+    verifier:
+      inspec_tests:
+        - path: test/integration/default/etcd/default_spec.rb
+        - path: test/integration/default/kubernetes/master_spec.rb
+        - path: test/integration/default/kubernetes/worker_spec.rb

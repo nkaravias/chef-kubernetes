@@ -7,13 +7,13 @@
       "etcd": {
         "certificate_data_bag_info": [
           {
-            "key":"etcd.server.cert",
+            "key":"etcd.ssl.cert",
             "dbag_name":"certificates",
             "dbag_item":"skynet_kitchen",
             "path":"/etc/etcd/etcd-server.pem"
           },
           {
-            "key":"etcd.server.key",
+            "key":"etcd.ssl.key",
             "dbag_name":"certificates",
             "dbag_item":"skynet_kitchen",
             "path":"/etc/etcd/etcd-server-key.pem"

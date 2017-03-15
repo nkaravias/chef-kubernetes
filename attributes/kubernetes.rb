@@ -2,6 +2,7 @@ default['skynet']['kubernetes']['user']='root'
 default['skynet']['kubernetes']['group']='root'
 
 default['skynet']['kubernetes']['version']='1.5.2-1'
+default['skynet']['kubernetes']['worker']['version']='1.5.2-1'
 default['skynet']['docker']['version']='1.12.6-1.el7'
 
 # Master configuration
@@ -50,7 +51,33 @@ default['skynet']['kubernetes']['master']['cmanager'].tap do |cmanager|
 end
 
 # Worker configuration
+default['skynet']['kubernetes']['worker']['certificate_data_bag_info']=[]
 default['skynet']['kubernetes']['worker']['flanneld'].tap do |flanneld|
-  flanneld['etcd_uri']="https://default-chef12:2379"
-  flanneld['etcd_key']='/skynet/network'
+  flanneld['etcd_uri']=''#"https://default-chef12:2379"
+  flanneld['etcd_key']=''#'/skynet/network'
 end
+
+default['skynet']['kubernetes']['worker']['kubelet'].tap do |kubelet|
+  kubelet['allow-privileged']=true
+  kubelet['cluster-dns']='172.16.0.10'
+  kubelet['cluster-domain']='cluster.local'
+  kubelet['container-runtime']='docker'
+  kubelet['docker']='unix:///var/run/docker.sock'
+  kubelet['kubeconfig']='/etc/kubernetes/kubeconfig'
+  kubelet['cert-dir']='/etc/kubernetes'
+  kubelet['tls-cert-file']='/etc/kubernetes/sky-kubelet.pem'
+  kubelet['tls-private-key-file']='/etc/kubernetes/sky-kubelet-key.pem'
+  kubelet['client-ca-file']='/etc/kubernetes/sky-ca.pem'
+  kubelet['serialize-image-pulls']=false 
+end
+
+default['skynet']['kubernetes']['worker']['kube-proxy'].tap do |proxy|
+  proxy['kubeconfig']='/etc/kubernetes/kubeconfig'
+  proxy['proxy-mode']='iptables'
+end
+
+default['skynet']['kubernetes']['worker']['kubeconfig'].tap do |proxy|
+
+end
+
+

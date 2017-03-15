@@ -23,6 +23,18 @@
             "dbag_name":"certificates",
             "dbag_item":"skynet_kitchen",
             "path":"/etc/etcd/sky-ca.pem"
+          },
+          {
+            "key":"ca.cert",
+            "dbag_name":"certificates",
+            "dbag_item":"skynet_kitchen",
+            "path":"/usr/share/pki/ca-trust-source/sky-ca.pem"
+          },
+          {
+            "key":"ca.cert",
+            "dbag_name":"certificates",
+            "dbag_item":"skynet_kitchen",
+            "path":"/etc/pki/ca-trust/source/anchors/sky-ca.pem"
           }
         ],
         "tls_enabled":true,
