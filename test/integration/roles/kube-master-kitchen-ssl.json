@@ -32,6 +32,12 @@
 		"path":"/etc/kubernetes/sky-ca.pem"
 	      },
 	      {
+		"key":"ca.key",
+		"dbag_name":"certificates",
+		"dbag_item":"skynet_kitchen",
+		"path":"/etc/kubernetes/sky-ca-key.pem"
+	      },
+	      {
 		"key":"ca.cert",
 		"dbag_name":"certificates",
 		"dbag_item":"skynet_kitchen",

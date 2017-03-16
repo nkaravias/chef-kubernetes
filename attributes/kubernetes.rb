@@ -59,6 +59,8 @@ end
 
 default['skynet']['kubernetes']['worker']['kubelet'].tap do |kubelet|
   kubelet['allow-privileged']=true
+  kubelet['api-servers']=''
+  kubelet['require-kubeconfig']=true
   kubelet['cluster-dns']='172.16.0.10'
   kubelet['cluster-domain']='cluster.local'
   kubelet['container-runtime']='docker'

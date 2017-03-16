@@ -36,6 +36,7 @@ template '/etc/kubernetes/kubeconfig' do
   mode '0700'
   helpers(Skynet::SkynetHelper)
   cookbook 'skynet'
+  action :create_if_missing
   variables(:kube_worker_config => node['skynet']['kubernetes']['worker'])
   notifies :nothing, "execute[systemctl daemon-reload]", :delayed
   notifies :nothing, "service[kubelet]", :delayed
