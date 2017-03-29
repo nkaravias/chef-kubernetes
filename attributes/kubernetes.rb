@@ -39,8 +39,9 @@ default['skynet']['kubernetes']['master']['scheduler'].tap do |scheduler|
 end
 
 default['skynet']['kubernetes']['master']['cmanager'].tap do |cmanager|
-  cmanager['allocate-node-cidrs']=false
+  cmanager['allocate-node-cidrs']=true
   cmanager['cluster-cidr']='172.16.0.0/16'
+  cmanager['node-cidr-mask-size']=24
   cmanager['cluster-name']='kubernetes'
   cmanager['leader-elect']=true
   cmanager['master']=''

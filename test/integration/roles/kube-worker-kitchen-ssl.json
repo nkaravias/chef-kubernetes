@@ -41,6 +41,9 @@
           "kubelet": {
             "network-plugin-mtu": 1450
           },
+          "kube-proxy": {
+            "cluster-cidr":"172.16.128.0/17"
+          },
           "flanneld": {
             "etcd_uri":"https://default-chef12:2379",
             "etcd_key":"/skynet/kitchen/network"

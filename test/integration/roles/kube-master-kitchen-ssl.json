@@ -52,8 +52,14 @@
 	    ],
        "api": { 
          "authorization-policy-file":"/var/lib/kubernetes/authorization-policy.jsonl",
-         "token-auth-file":"/var/lib/kubernetes/token.csv"
-       }
+         "token-auth-file":"/var/lib/kubernetes/token.csv",
+         "service-cluster-ip-range":"172.16.0.0/17"
+       },
+      "cmanager": {
+        "cluster-cidr":"172.16.128.0/17",
+        "node-cidr-mask-size": 25,
+        "service-cluster-ip-range":"172.16.0.0/17"
+      }
      }
     }
   },
