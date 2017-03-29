@@ -74,6 +74,16 @@ else
   end
 end
 
+# Install / configure CNI
+yum_package 'cni-elq' do
+  action :install
+end
+
+template ::File.join(node['skynet']['kubernetes']['worker']['cni']['conf_dir'],'flannel.conf') do
+  source 'default/etc/cni/flannel.conf.erb'
+  action :create
+end
+
 # Install/configure flanneld
 yum_package 'flanneld-elq' do
   action :install

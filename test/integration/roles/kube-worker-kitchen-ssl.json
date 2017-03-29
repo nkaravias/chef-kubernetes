@@ -38,6 +38,9 @@
 		"path":"/etc/pki/ca-trust/source/anchors/sky-ca.pem"
 	      }
 	    ],
+          "kubelet": {
+            "network-plugin-mtu": 1450
+          },
           "flanneld": {
             "etcd_uri":"https://default-chef12:2379",
             "etcd_key":"/skynet/kitchen/network"

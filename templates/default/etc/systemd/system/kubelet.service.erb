@@ -10,10 +10,12 @@ ExecStart=/usr/bin/kubelet \
 <%= render_str(@kube_worker_config['kubelet']['cluster-dns'],' --cluster-dns',' \\','=') -%>
 <%= render_str(@kube_worker_config['kubelet']['cluster-domain'],' --cluster-domain',' \\','=') -%>
 <%= render_str(@kube_worker_config['kubelet']['container-runtime'],' --container-runtime',' \\','=') -%>
+<%= render_str(@kube_worker_config['kubelet']['cni-conf-dir'],' --cni-conf-dir',' \\','=') -%>
+<%= render_str(@kube_worker_config['kubelet']['network-plugin'],' --network-plugin',' \\','=') -%>
+<%= render_str(@kube_worker_config['kubelet']['network-plugin-mtu'],' --network-plugin-mtu',' \\','=') -%>
 <%= render_str(@kube_worker_config['kubelet']['docker'],' --docker',' \\','=') -%>
 <%= render_str(@kube_worker_config['kubelet']['require-kubeconfig'],' --require-kubeconfig',' \\','=') -%>
 <%= render_str(@kube_worker_config['kubelet']['kubeconfig'],' --kubeconfig',' \\','=') -%>
-<%= render_str(@kube_worker_config['kubelet']['api-servers'],' --api-servers',' \\','=') -%>
 <%= render_str(@kube_worker_config['kubelet']['cert-dir'],' --cert-dir',' \\','=') -%>
 <%= render_str(@kube_worker_config['kubelet']['tls-cert-file'],' --tls-cert-file',' \\','=') -%>
 <%= render_str(@kube_worker_config['kubelet']['tls-private-key-file'],' --tls-private-key-file',' \\','=') -%>

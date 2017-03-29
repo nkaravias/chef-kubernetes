@@ -3,7 +3,8 @@ default['skynet']['kubernetes']['group']='root'
 
 default['skynet']['kubernetes']['version']='1.5.2-1'
 default['skynet']['kubernetes']['worker']['version']='1.5.2-1'
-default['skynet']['docker']['version']='1.12.6-1.el7'
+#default['skynet']['docker']['version']='1.12.6-1.el7'
+default['skynet']['docker']['version']='1.12.3-1.el7'
 
 # Master configuration
 default['skynet']['kubernetes']['master']['certificate_data_bag_info']=[]
@@ -26,7 +27,7 @@ default['skynet']['kubernetes']['master']['api'].tap do |api|
   api['kubelet-certificate-authority']='/etc/kubernetes/sky-ca.pem'
   api['etcd-servers']="https://default-chef12:2379"
   api['service-account-key-file']='/etc/kubernetes/sky-kubernetes-key.pem'
-  api['service-cluster-ip-range']='172.16.0.0/16'
+  api['service-cluster-ip-range']='172.16.0.0/24'
   api['tls-cert-file']='/etc/kubernetes/sky-kubernetes.pem'
   api['tls-private-key-file']='/etc/kubernetes/sky-kubernetes-key.pem'
   api['token-auth-file']=''
@@ -38,7 +39,7 @@ default['skynet']['kubernetes']['master']['scheduler'].tap do |scheduler|
 end
 
 default['skynet']['kubernetes']['master']['cmanager'].tap do |cmanager|
-  cmanager['allocate-node-cidrs']=true
+  cmanager['allocate-node-cidrs']=false
   cmanager['cluster-cidr']='172.16.0.0/16'
   cmanager['cluster-name']='kubernetes'
   cmanager['leader-elect']=true
@@ -64,6 +65,9 @@ default['skynet']['kubernetes']['worker']['kubelet'].tap do |kubelet|
   kubelet['cluster-dns']='172.16.0.10'
   kubelet['cluster-domain']='cluster.local'
   kubelet['container-runtime']='docker'
+  kubelet['cni-conf-dir']='/etc/cni/net.d' 
+  kubelet['network-plugin']='cni' 
+  kubelet['network-plugin-mtu']=1450 
   kubelet['docker']='unix:///var/run/docker.sock'
   kubelet['kubeconfig']='/etc/kubernetes/kubeconfig'
   kubelet['cert-dir']='/etc/kubernetes'
@@ -75,11 +79,17 @@ end
 
 default['skynet']['kubernetes']['worker']['kube-proxy'].tap do |proxy|
   proxy['kubeconfig']='/etc/kubernetes/kubeconfig'
+  proxy['cluster-cidr']='172.16.0.0/16'
   proxy['proxy-mode']='iptables'
 end
 
-default['skynet']['kubernetes']['worker']['kubeconfig'].tap do |proxy|
-
+#default['skynet']['kubernetes']['worker']['kubeconfig'].tap do |proxy|
+#
+#end
+default['skynet']['kubernetes']['worker']['cni'].tap do |cni|
+  cni['bin_dir']='/opt/cni/bin'
+  cni['conf_dir']='/etc/cni/net.d'
+  cni['plugin_url']='https://github.com/containernetworking/cni/releases/download/v0.5.1/cni-amd64-v0.5.1.tgz'
 end
 
 

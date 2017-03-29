@@ -16,6 +16,7 @@ provisioner:
 platforms:
   - name: chef12
     driver:
+      gui: true
       customize:
         memory: 2048
         cpus: 2
@@ -49,7 +50,7 @@ suites:
       - recipe[skynet::etcd]
       - recipe[skynet::kubernetes_master]
       - recipe[skynet::kubernetes_worker]
-#      - recipe[skynet::trust_ca]
+      - recipe[skynet::trust_ca]
       - role[etcd-kitchen-ssl]
       - role[kube-master-kitchen-ssl]
       - role[kube-worker-kitchen-ssl]
