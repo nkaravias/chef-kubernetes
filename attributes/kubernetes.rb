@@ -84,13 +84,8 @@ default['skynet']['kubernetes']['worker']['kube-proxy'].tap do |proxy|
   proxy['proxy-mode']='iptables'
 end
 
-#default['skynet']['kubernetes']['worker']['kubeconfig'].tap do |proxy|
-#
-#end
 default['skynet']['kubernetes']['worker']['cni'].tap do |cni|
   cni['bin_dir']='/opt/cni/bin'
   cni['conf_dir']='/etc/cni/net.d'
   cni['plugin_url']='https://github.com/containernetworking/cni/releases/download/v0.5.1/cni-amd64-v0.5.1.tgz'
 end
-
-

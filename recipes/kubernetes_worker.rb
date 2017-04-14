@@ -154,9 +154,9 @@ if /^4.*/.match(node[:kernel][:release])
 end
 
 service 'kubelet' do
-  action :nothing
+  action :enable
 end
 
 service 'kube-proxy' do
-  action :nothing
+  action :enable
 end

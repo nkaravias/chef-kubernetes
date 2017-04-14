@@ -1,80 +1,52 @@
 # skynet Cookbook
 
-TODO: Enter the cookbook description here.
-
-e.g.
-This cookbook makes your favorite breakfast sandwich.
+Deploys a full kubernetes stack (etcd, kubernetes control plane & kubernetes workers)
 
 ## Requirements
 
-TODO: List your cookbook requirements. Be sure to include any requirements this cookbook has on platforms, libraries, other cookbooks, packages, operating systems, etc.
-
-e.g.
 ### Platforms
 
-- SandwichOS
-
-### Chef
-
-- Chef 12.0 or later
-
-### Cookbooks
-
-- `toaster` - skynet needs toaster to brown your bagel.
+Centos-based systems (Tests executed on OEL7)
 
 ## Attributes
 
-TODO: List your cookbook attributes here.
+* yum repository namespace: `node['skynet']['yum']`
+* etcd related attributes are on the `node['skynet']['etcd']` namespace
+* Global kubernetes attribute namespace: `node['skynet']['kubernetes']`
+* Docker attribute namespace: `node['skynet']['docker']`
+* Kubernetes master namespace: `node['skynet']['kubernetes']['master']`
+* Kubernetes API namespace: `node['skynet']['kubernetes']['master']['api']`
+* Kubernetes scheduler namespace: `node['skynet']['kubernetes']['master']['scheduler']`
+* Kubernetes controller namespace: `node['skynet']['kubernetes']['master']['cmanager']`
+* Kubernetes worker namespace: `node['skynet']['kubernetes']['worker']`
+* Kubernetes kubelet namespace: `node['skynet']['kubernetes']['worker']['kubelet']`
+* Kubernetes kube-proxy namespace: `node['skynet']['kubernetes']['worker']['kube-proxy']`
+* Kubernetes worker CNI namespace: `node['skynet']['kubernetes']['worker']['cni']`
 
-e.g.
-### skynet::default
+Details are found on:
+* attributes/etcd.rb
+* attributes/kubernetes.rb
+* attributes/default.rb
 
-<table>
-  <tr>
-    <th>Key</th>
-    <th>Type</th>
-    <th>Description</th>
-    <th>Default</th>
-  </tr>
-  <tr>
-    <td><tt>['skynet']['bacon']</tt></td>
-    <td>Boolean</td>
-    <td>whether to include bacon</td>
-    <td><tt>true</tt></td>
-  </tr>
-</table>
+***
 
 ## Usage
 
-### skynet::default
-
-TODO: Write usage instructions for each cookbook.
-
-e.g.
-Just include `skynet` in your node's `run_list`:
-
-```json
-{
-  "name":"my_node",
-  "run_list": [
-    "recipe[skynet]"
-  ]
-}
-```
+### skynet::etcd
+### skynet::kubernetes_master
+### skynet::kubernetes_worker
+### skynet::trust_ca
 
 ## Contributing
 
-TODO: (optional) If this is a public cookbook, detail the process for contributing. If this is a private cookbook, remove this section.
-
-e.g.
 1. Fork the repository on Github
 2. Create a named feature branch (like `add_component_x`)
 3. Write your change
 4. Write tests for your change (if applicable)
-5. Run the tests, ensuring they all pass
+5. Run the test-kitchen tests, ensuring they all pass
 6. Submit a Pull Request using Github
 
 ## License and Authors
 
-Authors: TODO: List authors
+Authors: nikolas.karavias@oracle.com
 

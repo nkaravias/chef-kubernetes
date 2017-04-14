@@ -4,7 +4,7 @@ Type=notify
 # exists and systemd currently does not support the cgroup feature set required
 # for containers run by docker
 EnvironmentFile=-/run/flannel/docker
-ExecStart=/usr/bin/dockerd $DOCKER_NETWORK_OPTIONS -g /scratch/docker-storage --insecure-registry 10.88.249.32:5000
+ExecStart=/usr/bin/dockerd $DOCKER_NETWORK_OPTIONS -g /scratch/docker-storage --insecure-registry 10.88.249.32:5000 --storage-driver=overlay
 
 ExecReload=/bin/kill -s HUP $MAINPID
 # Having non-zero Limit*s causes performance problems due to accounting overhead

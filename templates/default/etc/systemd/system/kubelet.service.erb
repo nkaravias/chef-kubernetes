@@ -2,6 +2,7 @@
 Description=Kubernetes Kubelet
 Documentation=https://github.com/GoogleCloudPlatform/kubernetes
 After=docker.service
+After=flanneld.service
 Requires=docker.service
 
 [Service]
