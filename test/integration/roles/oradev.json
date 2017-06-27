@@ -1,0 +1,42 @@
+{
+  "name": "oradev",
+  "description": "Configuration options for the DEN/Oradev datacenter - perhaps move to an environment",
+  "json_class": "Chef::Role",
+  "default_attributes": {
+    "skynet": {
+      "core": {
+        "proxy": {
+          "http": "http://www-proxy.us.oracle.com:80",
+          "https": "http://www-proxy.us.oracle.com:80",
+          "no": "*.us.oracle.com,localhost,127.0.0.1"
+        }
+      }
+    },
+    "ohai": {
+      "disabled_plugins": [
+         "Passwd", 
+         ":Passwd",
+         "passwd", 
+         "Group",
+         ":Group",
+         "group"
+      ]
+    },
+    "chef_client": {
+      "config": {
+        "chef_server_url":"https://den00hrw.us.oracle.com/organizations/skynet",
+        "validation_client_name":"chef-validator"
+      }
+    }
+  },
+  "override_attributes": {
+
+  },
+  "chef_type": "role",
+  "run_list": [
+
+  ],
+  "env_run_lists": {
+
+  }
+}

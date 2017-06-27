@@ -13,5 +13,5 @@ end
 
 yum_package 'kernel-uek-devel' do
   version node['skynet_kitchen_helper']['kernel_version']
-  notifies :reboot_now,'reboot[now]',:immediately
+#  notifies :reboot_now,'reboot[now]',:immediately
 end

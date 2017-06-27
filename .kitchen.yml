@@ -21,16 +21,30 @@ platforms:
         memory: 2048
         cpus: 2
       vm_hostname: default-chef12
-      box: oel71-default
+      box: oel73-default-5.1.8
     transport:
       max_ssh_sessions: 1
     provisioner:
       require_chef_omnibus: 12.19.36
+  - name: chef13
+    driver:
+      customize:
+        memory: 2048
+        cpus: 2
+      vm_hostname: default-chef12
+      box: oel73-default-5.1.8
+    transport:
+      max_ssh_sessions: 1
+    provisioner:
+      require_chef_omnibus: 13.0.118
 suites:
   - name: etcd
     run_list:
-      - recipe[skynet::etcd]
+      - recipe[skynet::core_system]
+        #- recipe[skynet::epel]
+        #- recipe[skynet::etcd]
       - role[etcd-kitchen-ssl]
+      - role[oradev]
     verifier:
       inspec_tests:
         - path: test/integration/default/etcd/default_spec.rb
