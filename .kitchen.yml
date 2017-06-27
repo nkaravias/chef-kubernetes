@@ -41,10 +41,9 @@ suites:
   - name: etcd
     run_list:
       - recipe[skynet::core_system]
-        #- recipe[skynet::epel]
-        #- recipe[skynet::etcd]
+      - recipe[skynet::etcd]
       - role[etcd-kitchen-ssl]
-      - role[oradev]
+        #- role[oradev]
     verifier:
       inspec_tests:
         - path: test/integration/default/etcd/default_spec.rb

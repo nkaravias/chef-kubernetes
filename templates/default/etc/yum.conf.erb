@@ -22,6 +22,6 @@ multilib_policy = all
 
 # PUT YOUR REPOS HERE OR IN separate files named file.repo
 # in /etc/yum.repos.d
-<% unless @core['proxy']['http'].empty? %>
-proxy=<%=@core['proxy']['http'] %>
+<% unless @proxy_yum.empty? %>
+proxy=<%=@proxy_yum %>
 <% end %>

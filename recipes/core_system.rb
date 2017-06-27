@@ -1,6 +1,12 @@
+if node['skynet']['core']['proxy']['yum'].empty?
+  proxy_yum=node['skynet']['core']['proxy']['http']
+else
+  proxy_yum=node['skynet']['core']['proxy']['yum']
+end
+
 template '/etc/yum.conf' do
   source 'default/etc/yum.conf.erb'
-  variables(:core => node['skynet']['core'])
+  variables(:proxy_yum => proxy_yum)
 end
 
 node.default['chef_client']['config']['http_proxy']=node['skynet']['core']['proxy']['http'] 
