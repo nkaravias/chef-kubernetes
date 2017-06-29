@@ -9,6 +9,13 @@ template '/etc/yum.conf' do
   variables(:proxy_yum => proxy_yum)
 end
 
+ntp_template=node['skynet']['core']['ntp']['use_template']
+unless ntp_template.empty?
+  template '/etc/ntp.conf' do
+    source "default/etc/#{ntp_template}.erb"
+  end
+end
+
 node.default['chef_client']['config']['http_proxy']=node['skynet']['core']['proxy']['http'] 
 node.default['chef_client']['config']['https_proxy']=node['skynet']['core']['proxy']['https'] 
 node.default['chef_client']['config']['no_proxy']=node['skynet']['core']['proxy']['no'] 

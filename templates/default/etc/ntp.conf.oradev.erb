@@ -1,0 +1,13 @@
+# PDIT DIS Standard ntp.conf for Denver Region
+#server  10.88.0.16
+#server  10.88.0.31
+server den-i010.oradev.oraclecorp.com iburst
+server den-i011.oradev.oraclecorp.com iburst
+#server 10.88.10.121 iburst
+#server 10.246.0.1 iburst
+#server 10.246.0.2 iburst
+driftfile /var/lib/ntp/drift
+broadcastdelay  0.008
+authenticate no
+server 127.127.1.0      # local clock
+fudge  127.127.1.0 stratum 10

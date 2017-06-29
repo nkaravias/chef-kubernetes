@@ -10,6 +10,9 @@
           "https": "http://www-proxy.us.oracle.com:80",
           "no": "*.us.oracle.com,localhost,127.0.0.1",
           "yum":"http://dmz-proxy-adcq7.us.oracle.com:80"
+        },
+        "ntp": {
+          "use_template": "ntp.conf.oradev"
         }
       }
     },

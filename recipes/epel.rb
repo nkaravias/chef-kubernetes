@@ -7,9 +7,13 @@ yum_package 'epel-release-latest-7.noarch.rpm' do
 end
 
 %W{ ncdu telnet vim nc }.each do |pkg|
-  yum_package pkg
+  yum_package pkg do
+    notifies :run, 'execute[disable epel]'
+  end
 end
 
-yum_repository 'epel' do
-  enabled false
+execute 'disable epel' do
+  cwd '/etc/yum.repos.d'
+  command 'sed -i s/enabled=1/enabled=0/g epel.repo'
+  action :nothing
 end
