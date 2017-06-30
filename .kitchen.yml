@@ -36,7 +36,7 @@ platforms:
     transport:
       max_ssh_sessions: 1
     provisioner:
-      require_chef_omnibus: 13.0.118
+      require_chef_omnibus: 13.1.31
 suites:
   - name: etcd
     run_list:

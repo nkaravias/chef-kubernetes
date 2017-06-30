@@ -8,6 +8,15 @@
 #
 ::Chef::Recipe.send(:include,Skynet::SkynetHelper)
 
+group node['skynet']['etcd']['group']
+
+user node['skynet']['etcd']['user'] do
+  comment     'etcd daemon'
+  gid         node['skynet']['etcd']['group']
+  home        '/var/empty'
+  shell       '/sbin/nologin'
+end
+
 yum_repository "oradev_repository" do
   description "oradev repository"
   baseurl node['skynet']['yum']['oradev']['base_url']
