@@ -40,7 +40,12 @@ end
 # otherwise use a role on a per node basis to override on each applicable node
 %W{ initial-advertise-peer-urls listen-peer-urls }.each do |etcd_attr|
   if node['skynet']['etcd'][etcd_attr].empty?
-    peer_host_url=get_etcd_url(node['fqdn'],node['skynet']['etcd']['peer_port'],node['skynet']['etcd']['tls_enabled'])
+    if etcd_attr=='listen-peer-urls'
+      host = node['ipaddress']
+    else 
+      host = node['fqdn']
+    end
+    peer_host_url=get_etcd_url(host,node['skynet']['etcd']['peer_port'],node['skynet']['etcd']['tls_enabled'])
     Chef::Log.info("Setting #{etcd_attr} to #{peer_host_url}")
     node.override['skynet']['etcd'][etcd_attr]=peer_host_url
   else
@@ -50,7 +55,12 @@ end
 
 %W{ listen-client-urls advertise-client-urls }.each do |etcd_attr|
   if node['skynet']['etcd'][etcd_attr].empty?
-    client_host_url=get_etcd_url(node['fqdn'],node['skynet']['etcd']['client_port'],node['skynet']['etcd']['tls_enabled'])
+    if etcd_attr=='listen-client-urls'
+      host = node['ipaddress']
+    else 
+      host = node['fqdn']
+    end
+    client_host_url=get_etcd_url(host,node['skynet']['etcd']['client_port'],node['skynet']['etcd']['tls_enabled'])
     Chef::Log.info("Setting #{etcd_attr} to #{client_host_url}")
     node.override['skynet']['etcd'][etcd_attr]=client_host_url
   else
