@@ -3,8 +3,7 @@ default['skynet']['kubernetes']['group']='root'
 
 default['skynet']['kubernetes']['version']='1.5.2-1'
 default['skynet']['kubernetes']['worker']['version']='1.5.2-1'
-#default['skynet']['docker']['version']='1.12.6-1.el7'
-default['skynet']['docker']['version']='1.12.3-1.el7'
+default['skynet']['docker']['version']='1.12.6-1.el7'
 
 # Master configuration
 default['skynet']['kubernetes']['master']['certificate_data_bag_info']=[]

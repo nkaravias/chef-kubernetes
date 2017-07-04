@@ -15,6 +15,8 @@ ExecStart=/usr/bin/etcd \
 <%= render_str(@etcd_config['peer-key-file'],' --peer-key-file',' \\','=') -%>
 <%= render_str(@etcd_config['trusted-ca-file'],' --trusted-ca-file',' \\','=') -%>
 <%= render_str(@etcd_config['peer-trusted-ca-file'],' --peer-trusted-ca-file',' \\','=') -%>
+<%= render_str(@etcd_config['client-cert-auth'],' --client-cert-auth',' \\','=') -%>
+<%= render_str(@etcd_config['peer-client-cert-auth'],' --peer-client-cert-auth',' \\','=') -%>
 <%= render_str(@etcd_config['initial-advertise-peer-urls'],' --initial-advertise-peer-urls',' \\',' ') -%>
 <%= render_str(@etcd_config['listen-peer-urls'],' --listen-peer-urls',' \\',' ') -%>
 <%= render_str(@etcd_config['listen-client-urls'],' --listen-client-urls',' \\',' ') -%>

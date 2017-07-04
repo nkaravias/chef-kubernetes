@@ -43,7 +43,7 @@ suites:
       - recipe[skynet::core_system]
       - recipe[skynet::prometheus_exporter]
       - recipe[skynet::etcd]
-      - role[etcd-kitchen-ssl]
+      - role[skynet-etcd-kitchen]
       - role[prometheus-exporter]
       #- role[oradev]
     verifier:
@@ -51,9 +51,11 @@ suites:
         - path: test/integration/default/etcd/default_spec.rb
   - name: master
     run_list:
+      - recipe[skynet::core_system]
+      - recipe[skynet::prometheus_exporter]
       - recipe[skynet::etcd]
       - recipe[skynet::kubernetes_master]
-      - role[etcd-kitchen-ssl]
+      - role[skynet-etcd-kitchen]
       - role[kube-master-kitchen-ssl]
     verifier:
       inspec_tests:
@@ -66,7 +68,7 @@ suites:
       - recipe[skynet::kubernetes_master]
       - recipe[skynet::kubernetes_worker]
       - recipe[skynet::trust_ca]
-      - role[etcd-kitchen-ssl]
+      - role[skynet-etcd-kitchen]
       - role[kube-master-kitchen-ssl]
       - role[kube-worker-kitchen-ssl]
     verifier:
