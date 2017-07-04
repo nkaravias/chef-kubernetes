@@ -41,8 +41,10 @@ suites:
   - name: etcd
     run_list:
       - recipe[skynet::core_system]
+      - recipe[skynet::prometheus_exporter]
       - recipe[skynet::etcd]
       - role[etcd-kitchen-ssl]
+      - role[prometheus-exporter]
       #- role[oradev]
     verifier:
       inspec_tests:

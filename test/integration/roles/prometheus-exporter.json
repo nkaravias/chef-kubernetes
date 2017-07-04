@@ -1,0 +1,27 @@
+{
+  "name": "prometheus-exporter",
+  "description": "Configuration options for prometheus exporters",
+  "json_class": "Chef::Role",
+  "default_attributes": {
+    "prometheus": {
+      "exporter": {
+        "node": {
+          "package": "prometheus-node-exporter-elq",
+          "version": "0.14-1",
+          "port": 9100,
+          "endpoint":"/metrics"
+        }
+      }
+    }
+  },
+  "override_attributes": {
+
+  },
+  "chef_type": "role",
+  "run_list": [
+
+  ],
+  "env_run_lists": {
+
+  }
+}
