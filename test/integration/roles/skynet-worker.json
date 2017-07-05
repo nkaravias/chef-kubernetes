@@ -1,6 +1,6 @@
 {
-  "name": "kube-worker-kitchen-ssl",
-  "description": "Enable ssl for test kitchen local use case",
+  "name": "Skynet worker",
+  "description": "Kubernetes worker configuration",
   "json_class": "Chef::Role",
   "default_attributes": {
     "skynet": {

@@ -56,7 +56,8 @@ suites:
       - recipe[skynet::etcd]
       - recipe[skynet::kubernetes_master]
       - role[skynet-etcd-kitchen]
-      - role[kube-master-kitchen-ssl]
+      - role[skynet-master]
+      #- role[oradev]
     verifier:
       inspec_tests:
         - path: test/integration/default/etcd/default_spec.rb

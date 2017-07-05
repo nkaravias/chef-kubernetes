@@ -1,6 +1,6 @@
 {
-  "name": "kube-master-kitchen-ssl",
-  "description": "Enable ssl for test kitchen local use case",
+  "name": "skynet-master",
+  "description": "Kubernetes master configuration",
   "json_class": "Chef::Role",
   "default_attributes": {
     "skynet": {
@@ -15,13 +15,13 @@
             },
 	    "certificate_data_bag_info": [
 	      {
-		"key":"apiserver.ssl.cert",
+		"key":"kube.server.cert",
 		"dbag_name":"certificates",
 		"dbag_item":"skynet_kitchen",
 		"path":"/etc/kubernetes/sky-kubernetes.pem"
 	      },
 	      {
-		"key":"apiserver.ssl.key",
+		"key":"kube.server.key",
 		"dbag_name":"certificates",
 		"dbag_item":"skynet_kitchen",
 		"path":"/etc/kubernetes/sky-kubernetes-key.pem"
@@ -51,8 +51,19 @@
 		"path":"/etc/pki/ca-trust/source/anchors/sky-ca.pem"
 	      }
 	    ],
-       "api": { 
-         "authorization-policy-file":"/var/lib/kubernetes/authorization-policy.jsonl",
+       "api": {
+         "admission-control":"NamespaceLifecycle,LimitRanger,ServiceAccount,DefaultStorageClass,ResourceQuota",
+         "authorization-mode":"RBAC",
+         "client-ca-file": "/etc/kubernetes/sky-ca.pem",
+         "etcd-cafile": "/etc/kubernetes/sky-ca.pem",
+         "etcd-certfile": "/etc/kubernetes/sky-kubernetes.pem",
+         "etcd-keyfile": "/etc/kubernetes/sky-kubernetes-key.pem",
+         "experimental-bootstrap-token-auth": "",
+         "kubelet-certificate-authority": "/etc/kubernetes/sky-ca.pem",
+         "kubelet-client-certificate": "/etc/kubernetes/sky-kubernetes.pem",
+         "kubelet-client-key": "/etc/kubernetes/sky-kubernetes-key.pem",
+         "kubelet-https": true,
+         "runtime-config": "rbac.authorization.k8s.io/v1beta1",
          "token-auth-file":"/var/lib/kubernetes/token.csv",
          "service-cluster-ip-range":"172.16.0.0/17"
        },

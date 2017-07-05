@@ -1,6 +1,6 @@
 {
-  "name": "skynet-etcd-kitchen",
-  "description": "Etcd configuration for skynet - overriding vagrant eth0 IP with localhost",
+  "name": "skynet-etcd",
+  "description": "Etcd configuration for skynet",
   "json_class": "Chef::Role",
   "default_attributes": {
     "skynet": {
@@ -11,13 +11,13 @@
             "key":"kube.server.cert",
             "dbag_name":"certificates",
             "dbag_item":"skynet_kitchen",
-            "path":"/etc/etcd/sky-kubernetes.pem"
+            "path":"/etc/etcd/kubernetes.pem"
           },
           {
             "key":"kube.server.key",
             "dbag_name":"certificates",
             "dbag_item":"skynet_kitchen",
-            "path":"/etc/etcd/sky-kubernetes-key.pem"
+            "path":"/etc/etcd/kubernetes-key.pem"
           },
           {
             "key":"ca.cert",
@@ -27,16 +27,14 @@
           }
         ],
         "tls_enabled":true,
-        "cert-file":"/etc/etcd/sky-kubernetes.pem",
-        "key-file":"/etc/etcd/sky-kubernetes-key.pem",
-        "peer-cert-file":"/etc/etcd/sky-kubernetes.pem",
-        "peer-key-file":"/etc/etcd/sky-kubernetes-key.pem",
+        "cert-file":"/etc/etcd/kubernetes.pem",
+        "key-file":"/etc/etcd/kubernetes-key.pem",
+        "peer-cert-file":"/etc/etcd/kubernetes.pem",
+        "peer-key-file":"/etc/etcd/kubernetes-key.pem",
         "trusted-ca-file":"/etc/etcd/sky-ca.pem",
         "peer-client-cert-auth":"",
         "client-cert-auth":"",
         "peer-trusted-ca-file":"/etc/etcd/sky-ca.pem",
-        "listen-peer-urls": "https://127.0.0.1:2380",
-        "listen-client-urls": "https://127.0.0.1:2379",
         "initial-cluster":"default-chef12=https://default-chef12:2380"
       }
     }

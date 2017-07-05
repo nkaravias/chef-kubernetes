@@ -22,8 +22,15 @@ default['skynet']['kubernetes']['master']['api'].tap do |api|
   api['insecure-port']=8080
   api['insecure-bind-address']='127.0.0.1'
   api['enable-swagger-ui']=true
-  api['etcd-cafile']='/etc/kubernetes/sky-ca.pem'
+  api['client-ca-file']=''
+  api['etcd-cafile']=''
+  api['etcd-certfile']=''
+  api['etcd-keyfile']=''
   api['kubelet-certificate-authority']='/etc/kubernetes/sky-ca.pem'
+  api['kubelet-client-certificate']=''
+  api['kubelet-client-key']=''
+  api['kubelet-https']=false
+  api['runtime-config']=''
   api['etcd-servers']="https://default-chef12:2379"
   api['service-account-key-file']='/etc/kubernetes/sky-kubernetes-key.pem'
   api['service-cluster-ip-range']='172.16.0.0/24'
