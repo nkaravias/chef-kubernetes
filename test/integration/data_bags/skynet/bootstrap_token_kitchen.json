@@ -1,0 +1,9 @@
+{
+  "id": "bootstrap_token_kitchen",
+  "token": {
+    "encrypted_data": "l1KVae9Bsuj40iybR1THruYuN6IMHkJ+gOW4zwwhGyt3VD8pwZgLUSrOM2GO\nuLIgIZp+q6JyqgeaWVMHz5yluw==\n",
+    "iv": "mFDHve7BJxIXE0i7J41tbQ==\n",
+    "version": 1,
+    "cipher": "aes-256-cbc"
+  }
+}

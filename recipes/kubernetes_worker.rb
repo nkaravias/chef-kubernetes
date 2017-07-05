@@ -117,7 +117,7 @@ end
 
 # Install/Configure the docker engine
 Chef::Log.info("Kernel version detected: #{node[:kernel][:release]}")
-
+=begin
 if /^4.*/.match(node[:kernel][:release])
   Chef::Log.info("Kernel version >= 4.x")
   Chef::Log.info("Installing and configuring the docker engine")
@@ -146,11 +146,11 @@ if /^4.*/.match(node[:kernel][:release])
   service 'docker' do
     action [:enable]
   end
+end
+=end
 
-  service 'flanneld' do
-    action [:enable]
-  end
-
+service 'flanneld' do
+  action [:enable]
 end
 
 service 'kubelet' do

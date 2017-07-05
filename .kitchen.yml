@@ -64,14 +64,15 @@ suites:
         - path: test/integration/default/kubernetes/master_spec.rb
   - name: full
     run_list:
-      - recipe[skynet_kitchen_helper::uek4]
+      #- recipe[skynet_kitchen_helper::uek4]
       - recipe[skynet::etcd]
       - recipe[skynet::kubernetes_master]
-      - recipe[skynet::kubernetes_worker]
-      - recipe[skynet::trust_ca]
+      #- recipe[skynet::kubernetes_worker]
+      - recipe[skynet_kitchen_helper::docker]
+      #- recipe[skynet::trust_ca]
       - role[skynet-etcd-kitchen]
-      - role[kube-master-kitchen-ssl]
-      - role[kube-worker-kitchen-ssl]
+      - role[skynet-master]
+      #- role[skynet-worker]
     verifier:
       inspec_tests:
         - path: test/integration/default/etcd/default_spec.rb

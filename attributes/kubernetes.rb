@@ -36,7 +36,7 @@ default['skynet']['kubernetes']['master']['api'].tap do |api|
   api['service-cluster-ip-range']='172.16.0.0/24'
   api['tls-cert-file']='/etc/kubernetes/sky-kubernetes.pem'
   api['tls-private-key-file']='/etc/kubernetes/sky-kubernetes-key.pem'
-  api['token-auth-file']=''
+  api['token-auth-file']='/var/lib/kubernetes/token.csv'
 end
 
 default['skynet']['kubernetes']['master']['scheduler'].tap do |scheduler|
