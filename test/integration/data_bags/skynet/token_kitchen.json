@@ -1,8 +1,8 @@
 {
   "id": "token_kitchen",
   "token_mappings": {
-    "encrypted_data": "j0dbakFLWn3qGnWl3m+bqiTCRerlj4i52/qHw1hJqEwQgtxaxbt8X2GObdi5\nggFfjPBtg7H1lpY0OIrW+7DGiEEYjKWt549YiEmDpiDlUqeqPbHYOnlh2TSk\nbjv0vBnYMp2E/weP/MiJf3JuTT9gk4uqDwKyy05wzFEbtGzIytQ=\n",
-    "iv": "TNmbVFsJ2qKq1t/ljf3Qzg==\n",
+    "encrypted_data": "n6m60q3W0RtIv59yEioMzV3AtXCKDBTIbYsEMrk5ojnV4QIqXUffa/f4LUiS\nw4PLCE1qAKt/++wbRLsufV3hvL/C1utOOt3q5hHhgtAEGLwjKSqUq0/tNW9p\noHfQS1kDsKQvY9RVNk2hYdc0B28JqXwnfVFVkMnJ8Cc5kwkezCTtSgSL/Bl0\njoAScTOtP6xN\n",
+    "iv": "ug1NnKIo+U0+kBBYYQkNlA==\n",
     "version": 1,
     "cipher": "aes-256-cbc"
   }
