@@ -5,11 +5,11 @@
   "default_attributes": {
     "skynet": {
       "kubernetes": {
-        "version": "1.7.0-1",
-	  "master": {
-            "token_data_bag_info": {
-              "skynet": "token_kitchen"
-            },
+    	  "master": {
+          "version": "1.7.0-1",
+          "token_data_bag_info": {
+            "skynet": "token_kitchen"
+          },
             "certificate_data_bag_info": [
               {
           "key":"kube.server.cert",

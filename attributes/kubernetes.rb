@@ -1,14 +1,14 @@
 default['skynet']['kubernetes']['user']='root'
 default['skynet']['kubernetes']['group']='root'
 
-default['skynet']['kubernetes']['version']='1.5.2-1'
+default['skynet']['kubernetes']['master']['version']='1.5.2-1'
 default['skynet']['kubernetes']['worker']['version']='1.5.2-1'
 default['skynet']['docker']['version']='1.12.6-1.el7'
 
 # Master configuration
 default['skynet']['kubernetes']['master']['certificate_data_bag_info']=[]
 default['skynet']['kubernetes']['master']['token_data_bag_info']={}
-default['skynet']['kubernetes']['master']['auth_policy_data_bag_info']={}
+default['skynet']['kubernetes']['worker']['kubeconfig_data_bag_info']=[]
 default['skynet']['kubernetes']['master']['data_path']='/var/lib/kubernetes'
 
 default['skynet']['kubernetes']['master']['api'].tap do |api|
@@ -61,6 +61,7 @@ end
 # Worker configuration
 default['skynet']['kubernetes']['worker']['certificate_data_bag_info']=[]
 default['skynet']['kubernetes']['worker']['flanneld'].tap do |flanneld|
+  flanneld['version']='0.7.0-1'
   flanneld['etcd_uri']=''#"https://default-chef12:2379"
   flanneld['etcd_key']=''#'/skynet/network'
 end
@@ -72,25 +73,30 @@ default['skynet']['kubernetes']['worker']['kubelet'].tap do |kubelet|
   kubelet['cluster-dns']='172.16.0.10'
   kubelet['cluster-domain']='cluster.local'
   kubelet['container-runtime']='docker'
+  kubelet['experimental-bootstrap-kubeconfig']='/var/lib/kubelet/kubeconfig.bootstrap'
   kubelet['cni-conf-dir']='/etc/cni/net.d' 
   kubelet['network-plugin']='cni' 
   kubelet['network-plugin-mtu']=1450 
   kubelet['docker']='unix:///var/run/docker.sock'
-  kubelet['kubeconfig']='/etc/kubernetes/kubeconfig'
-  kubelet['cert-dir']='/etc/kubernetes'
-  kubelet['tls-cert-file']='/etc/kubernetes/sky-kubelet.pem'
-  kubelet['tls-private-key-file']='/etc/kubernetes/sky-kubelet-key.pem'
+  kubelet['kubeconfig']='/var/lib/kubelet/kubeconfig'
+  kubelet['cert-dir']='/var/lib/kubelet'
+  kubelet['register-node']=true
+  kubelet['tls-cert-file']='/var/lib/kubelet/kubelet-client.crt'
+  kubelet['tls-private-key-file']='/var/lib/kubelet/kubelet-client.key'
   kubelet['client-ca-file']='/etc/kubernetes/sky-ca.pem'
   kubelet['serialize-image-pulls']=false 
+  kubelet['data_path']='/var/lib/kubelet'
 end
 
 default['skynet']['kubernetes']['worker']['kube-proxy'].tap do |proxy|
-  proxy['kubeconfig']='/etc/kubernetes/kubeconfig'
+  proxy['kubeconfig']='/var/lib/kube-proxy/kubeconfig.kube-proxy'
   proxy['cluster-cidr']='172.16.0.0/16'
   proxy['proxy-mode']='iptables'
+  proxy['data_path']='/var/lib/kube-proxy'
 end
 
 default['skynet']['kubernetes']['worker']['cni'].tap do |cni|
+  cni['version']='0.5.1'
   cni['bin_dir']='/opt/cni/bin'
   cni['conf_dir']='/etc/cni/net.d'
   cni['plugin_url']='https://github.com/containernetworking/cni/releases/download/v0.5.1/cni-amd64-v0.5.1.tgz'

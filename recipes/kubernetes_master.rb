@@ -17,7 +17,7 @@ yum_repository "oradev_repository" do
 end
 
 yum_package 'kubernetes-master-elq' do
-  version node['skynet']['kubernetes']['version']
+  version node['skynet']['kubernetes']['master']['version']
   action :install
 end
 
@@ -61,7 +61,6 @@ end
 
 #If api['authorization-policy-file'] is set load the values from a data bag and render the file 
 # If api['token-auth-file'] is set load the values from a data bag and render the file 
-#[{dbag_info: "auth_policy_data_bag_info", config_attr: "authorization-policy-file"},
 [{dbag_info: "token_data_bag_info", config_attr: "token-auth-file"}].collect { |cfg|
    unless node['skynet']['kubernetes']['master']['api']["#{cfg[:config_attr]}"].empty?
     if node['skynet']['kubernetes']['master']["#{cfg[:dbag_info]}"].empty?

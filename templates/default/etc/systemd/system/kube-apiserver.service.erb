@@ -17,7 +17,7 @@ ExecStart=/usr/bin/kube-apiserver \
 <%= render_str(@kube_master_config['api']['etcd-servers'],'--etcd-servers',' \\','=') -%>
 <%= render_str(@kube_master_config['api']['experimental-bootstrap-token-auth'],'--experimental-bootstrap-token-auth',' \\','=') -%>
 <%= render_str(@kube_master_config['api']['insecure-bind-address'],'--insecure-bind-address',' \\','=') -%>
-<%= render_str(@kube_master_config['api']['kubelet-certificate-authority'],'--kubelet-certificate-authority',' \\','=') -%>
+<%= render_str(@kube_master_config['api']['kubelet-certificate-authority'],'#--kubelet-certificate-authority',' \\','=') -%>
 <%= render_str(@kube_master_config['api']['kubelet-client-certificate'],'--kubelet-client-certificate',' \\','=') -%>
 <%= render_str(@kube_master_config['api']['kubelet-client-key'],'--kubelet-client-key',' \\','=') -%>
 <%= render_str(@kube_master_config['api']['kubelet-https'],'--kubelet-https',' \\','=') -%>

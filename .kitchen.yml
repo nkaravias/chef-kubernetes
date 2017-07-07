@@ -33,6 +33,9 @@ platforms:
         cpus: 2
       vm_hostname: default-chef12
       box: oel73-default-5.1.8
+      network:
+        - ["forwarded_port", {guest: 6443, host: 26443}]
+        - ["forwarded_port", {guest: 8001, host: 28001}]
     transport:
       max_ssh_sessions: 1
     provisioner:
@@ -67,14 +70,14 @@ suites:
       #- recipe[skynet_kitchen_helper::uek4]
       - recipe[skynet::etcd]
       - recipe[skynet::kubernetes_master]
-      #- recipe[skynet::kubernetes_worker]
       - recipe[skynet_kitchen_helper::docker]
+      - recipe[skynet::kubernetes_worker]
       #- recipe[skynet::trust_ca]
       - role[skynet-etcd-kitchen]
       - role[skynet-master]
-      #- role[skynet-worker]
+      - role[skynet-worker]
     verifier:
       inspec_tests:
         - path: test/integration/default/etcd/default_spec.rb
         - path: test/integration/default/kubernetes/master_spec.rb
-        - path: test/integration/default/kubernetes/worker_spec.rb
+        #- path: test/integration/default/kubernetes/worker_spec.rb

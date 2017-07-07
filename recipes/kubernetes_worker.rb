@@ -5,11 +5,32 @@ yum_repository "oradev_repository" do
   gpgcheck node['skynet']['yum']['oradev']['gpgcheck']
   action :create
 end
-
 # Install/configure kubelet
 yum_package 'kubernetes-worker-elq' do
   version node['skynet']['kubernetes']['worker']['version']
   action :install
+end
+
+# render kubeconfigs for kubelet (bootstrap only) and kube-proxy
+if node['skynet']['kubernetes']['worker']['kubeconfig_data_bag_info'].empty?
+ Chef::Log.fatal("No kubeconfig data bag information is set for the worker - Check the attribute configuration")
+ raise "node['skynet']['kubernetes']['worker']['kubeconfig_data_bag_info'] is empty"
+else
+  node['skynet']['kubernetes']['worker']['kubeconfig_data_bag_info'].each do |kubeconfig|
+    dbag = kubeconfig['dbag_name']
+    dbag_item = kubeconfig['dbag_item']
+    dbag_key = kubeconfig['key']
+    cert_path = kubeconfig['path']
+    Chef::Log.info("Attempting to load #{dbag}::#{dbag_item}::#{dbag_key} for the worker node")
+    dbag_obj = Chef::EncryptedDataBagItem.load(dbag, dbag_item)
+    file dbag_key do
+      path cert_path
+      owner node['skynet']['kubernetes']['user']
+      group node['skynet']['kubernetes']['group']
+      mode '0700'
+      content Base64.decode64(dbag_obj[dbag_key])
+    end
+  end
 end
 
 execute 'systemctl daemon-reload' do
@@ -25,20 +46,7 @@ template '/etc/systemd/system/kubelet.service' do
   helpers(Skynet::SkynetHelper)
   cookbook 'skynet'
   variables(:kube_worker_config => node['skynet']['kubernetes']['worker'])
-  notifies :nothing, "execute[systemctl daemon-reload]", :delayed
-  notifies :nothing, "service[kubelet]", :delayed
-end
-
-template '/etc/kubernetes/kubeconfig' do
-  owner node['skynet']['kubernetes']['user']
-  group node['skynet']['kubernetes']['group']
-  source 'default/etc/kubernetes/kubeconfig.erb'
-  mode '0700'
-  helpers(Skynet::SkynetHelper)
-  cookbook 'skynet'
-  action :create_if_missing
-  variables(:kube_worker_config => node['skynet']['kubernetes']['worker'])
-  notifies :nothing, "execute[systemctl daemon-reload]", :delayed
+  notifies :run, "execute[systemctl daemon-reload]", :delayed
   notifies :nothing, "service[kubelet]", :delayed
 end
 
@@ -50,7 +58,7 @@ template '/etc/systemd/system/kube-proxy.service' do
   helpers(Skynet::SkynetHelper)
   cookbook 'skynet'
   variables(:kube_worker_config => node['skynet']['kubernetes']['worker'])
-  notifies :nothing, "execute[systemctl daemon-reload]", :delayed
+  notifies :run, "execute[systemctl daemon-reload]", :delayed
   notifies :nothing, "service[kube-proxy]", :delayed
 end
 
@@ -73,9 +81,9 @@ else
     end
   end
 end
-
 # Install / configure CNI
 yum_package 'cni-elq' do
+  version node['skynet']['kubernetes']['worker']['cni']['version']
   action :install
 end
 
@@ -86,6 +94,7 @@ end
 
 # Install/configure flanneld
 yum_package 'flanneld-elq' do
+  version node['skynet']['kubernetes']['worker']['flanneld']['version']
   action :install
 end
 
@@ -148,7 +157,6 @@ if /^4.*/.match(node[:kernel][:release])
   end
 end
 =end
-
 service 'flanneld' do
   action [:enable]
 end
