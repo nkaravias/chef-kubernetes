@@ -7,11 +7,11 @@ user node['prometheus']['user'] do
   shell       '/sbin/nologin'
 end
 
-yum_repository "oradev_repository" do
-  description "oradev repository"
-  baseurl node['skynet']['yum']['oradev']['base_url']
-  gpgkey node['skynet']['yum']['oradev']['gpg_key_url']
-  gpgcheck node['skynet']['yum']['oradev']['gpgcheck']
+yum_repository "sky-elq.repo" do
+  description "skynet repository"
+  baseurl node['skynet']['yum']['elqrepo']['base_url']
+  gpgkey node['skynet']['yum']['elqrepo']['gpg_key_url']
+  gpgcheck node['skynet']['yum']['elqrepo']['gpgcheck']
   action :create
 end
 

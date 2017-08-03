@@ -35,11 +35,14 @@ platforms:
       box: oel73-default-5.1.8
       network:
         - ["forwarded_port", {guest: 6443, host: 26443}]
+        - ["forwarded_port", {guest: 9100, host: 29100}]
         - ["forwarded_port", {guest: 8001, host: 28001}]
+        - ["forwarded_port", {guest: 8080, host: 28080}] # helper - container port
+        - ["forwarded_port", {guest: 31234, host: 31234}] # helper - nodePort service port
     transport:
       max_ssh_sessions: 1
     provisioner:
-      require_chef_omnibus: 13.1.31
+      require_chef_omnibus: 13.2.20
 suites:
   - name: etcd
     run_list:
@@ -68,11 +71,15 @@ suites:
   - name: full
     run_list:
       #- recipe[skynet_kitchen_helper::uek4]
+      - recipe[skynet::core_system]
+      - recipe[skynet::prometheus_exporter]
       - recipe[skynet::etcd]
       - recipe[skynet::kubernetes_master]
       - recipe[skynet_kitchen_helper::docker]
       - recipe[skynet::kubernetes_worker]
+      - recipe[skynet::kubectl]
       #- recipe[skynet::trust_ca]
+      - role[prometheus-exporter]
       - role[skynet-etcd-kitchen]
       - role[skynet-master]
       - role[skynet-worker]

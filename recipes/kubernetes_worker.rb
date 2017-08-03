@@ -1,8 +1,8 @@
-yum_repository "oradev_repository" do
-  description "oradev repository"
-  baseurl node['skynet']['yum']['oradev']['base_url']
-  gpgkey node['skynet']['yum']['oradev']['gpg_key_url']
-  gpgcheck node['skynet']['yum']['oradev']['gpgcheck']
+yum_repository "sky-elq.repo" do
+  description "skynet-elq repository"
+  baseurl node['skynet']['yum']['elqrepo']['base_url']
+  gpgkey node['skynet']['yum']['elqrepo']['gpg_key_url']
+  gpgcheck node['skynet']['yum']['elqrepo']['gpgcheck']
   action :create
 end
 # Install/configure kubelet
@@ -92,6 +92,11 @@ template ::File.join(node['skynet']['kubernetes']['worker']['cni']['conf_dir'],'
   action :create
 end
 
+execute 'systemctl daemon-reload' do
+  command 'systemctl daemon-reload'
+  action :nothing
+end
+
 # Install/configure flanneld
 yum_package 'flanneld-elq' do
   version node['skynet']['kubernetes']['worker']['flanneld']['version']
@@ -104,10 +109,6 @@ template '/etc/sysconfig/flanneld' do
   action :create
 end
 
-execute 'systemctl daemon-reload' do
-  command 'systemctl daemon-reload'
-  action :nothing
-end
 
 service 'flanneld' do
   action :nothing
@@ -157,9 +158,9 @@ if /^4.*/.match(node[:kernel][:release])
   end
 end
 =end
-service 'flanneld' do
-  action [:enable]
-end
+#service 'flanneld' do
+#  action [:enable]
+#end
 
 service 'kubelet' do
   action :enable

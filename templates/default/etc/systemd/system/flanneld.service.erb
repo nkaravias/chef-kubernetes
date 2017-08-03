@@ -9,7 +9,7 @@ Before=docker.service
 Type=notify
 EnvironmentFile=/etc/sysconfig/flanneld
 ExecStart=/usr/sbin/flanneld -etcd-endpoints=${FLANNEL_ETCD} -etcd-prefix=${FLANNEL_ETCD_KEY} -etcd-cafile=/etc/kubernetes/sky-ca.pem --ip-masq=false -v=1
-ExecStartPost=/usr/libexec/flannel/mk-docker-opts.sh -k DOCKER_NETWORK_OPTIONS -d /run/flannel/docker
+#ExecStartPost=/usr/libexec/flannel/mk-docker-opts.sh -k DOCKER_NETWORK_OPTIONS -d /run/flannel/docker
 #Restart=on-failure
 #RestartSec=5s
 

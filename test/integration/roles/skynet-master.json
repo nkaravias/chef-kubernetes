@@ -6,7 +6,7 @@
     "skynet": {
       "kubernetes": {
     	  "master": {
-          "version": "1.7.0-1",
+          "version": "1.7.3-1",
           "token_data_bag_info": {
             "skynet": "token_kitchen"
           },
