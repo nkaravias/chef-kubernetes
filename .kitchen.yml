@@ -22,6 +22,14 @@ platforms:
         cpus: 2
       vm_hostname: default-chef12
       box: oel73-default-5.1.8
+      network:
+        - ["forwarded_port", {guest: 6443, host: 26443}]
+        - ["forwarded_port", {guest: 9100, host: 29100}]
+        - ["forwarded_port", {guest: 8001, host: 28001}]
+        - ["forwarded_port", {guest: 8080, host: 28080}] # helper - container port
+        - ["forwarded_port", {guest: 31234, host: 31234}] # helper - nodePort service port
+        - ["forwarded_port", {guest: 31235, host: 31235}] # helper - nodePort service port
+        - ["forwarded_port", {guest: 31236, host: 31236}] # helper - nodePort service port
     transport:
       max_ssh_sessions: 1
     provisioner:
@@ -29,7 +37,7 @@ platforms:
   - name: chef13
     driver:
       customize:
-        memory: 2048
+        memory: 5192
         cpus: 2
       vm_hostname: default-chef12
       box: oel73-default-5.1.8
@@ -39,6 +47,8 @@ platforms:
         - ["forwarded_port", {guest: 8001, host: 28001}]
         - ["forwarded_port", {guest: 8080, host: 28080}] # helper - container port
         - ["forwarded_port", {guest: 31234, host: 31234}] # helper - nodePort service port
+        - ["forwarded_port", {guest: 31235, host: 31235}] # helper - nodePort service port
+        - ["forwarded_port", {guest: 31236, host: 31236}] # helper - nodePort service port
     transport:
       max_ssh_sessions: 1
     provisioner:

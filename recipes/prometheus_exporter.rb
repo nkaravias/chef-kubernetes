@@ -7,8 +7,8 @@ user node['prometheus']['user'] do
   shell       '/sbin/nologin'
 end
 
-yum_repository "sky-elq.repo" do
-  description "skynet repository"
+yum_repository "sky-elq" do
+  description "skynet-elq repository"
   baseurl node['skynet']['yum']['elqrepo']['base_url']
   gpgkey node['skynet']['yum']['elqrepo']['gpg_key_url']
   gpgcheck node['skynet']['yum']['elqrepo']['gpgcheck']

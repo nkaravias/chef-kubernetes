@@ -1,4 +1,4 @@
-yum_repository "sky-elq.repo" do
+yum_repository "sky-elq" do
   description "skynet-elq repository"
   baseurl node['skynet']['yum']['elqrepo']['base_url']
   gpgkey node['skynet']['yum']['elqrepo']['gpg_key_url']
