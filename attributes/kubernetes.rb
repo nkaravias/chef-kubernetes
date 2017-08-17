@@ -21,6 +21,7 @@ default['skynet']['kubernetes']['master']['api'].tap do |api|
   api['secure-port']=6443
   api['insecure-port']=8080
   api['insecure-bind-address']='127.0.0.1'
+  api['chef-tag']='eloqua-sky-master'
   api['enable-swagger-ui']=true
   api['client-ca-file']=''
   api['etcd-cafile']=''
@@ -60,6 +61,7 @@ end
 
 # Worker configuration
 default['skynet']['kubernetes']['worker']['certificate_data_bag_info']=[]
+default['skynet']['kubernetes']['worker']['api-endpoints']=[] # nullable - how does the worker talk to the api
 default['skynet']['kubernetes']['worker']['flanneld'].tap do |flanneld|
   flanneld['version']='0.7.0-1'
   flanneld['etcd_uri']=''#"https://default-chef12:2379"

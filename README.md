@@ -23,12 +23,32 @@ Centos-based systems (Tests executed on OEL7)
 * Kubernetes kube-proxy namespace: `node['skynet']['kubernetes']['worker']['kube-proxy']`
 * Kubernetes worker CNI namespace: `node['skynet']['kubernetes']['worker']['cni']`
 
+Attention required for the following attributes:
+* The attribute ['skynet']['kubernetes']['master']['api']['chef-tag'] specifies the tag that identifies a kubernetes api server.
+* The kubelet needs to be configuring during it's bootstrap phase to talk to an API endpoint. The attribute  ['skynet']['kubernetes']['worker']['api-endpoints'] is an array that can be used to store potential API endpoings (or a VIP) that the kubelet can use. For example ["https://server1:443","https://server2"]. If this attribute is not set, chef will do the following:
+* node search for "tags:node['skynet']['kubernetes']['master']['api']['chef-tag'] AND chef_environment:node.environment"
+* Inject the rendered server endpoints into the kubelet bootstrap and kube-proxy kubeconfig templates
+
 Details are found on:
 * attributes/etcd.rb
 * attributes/kubernetes.rb
 * attributes/default.rb
 
 ***
+
+## Data bags
+A data bag containing certificate information is required. The location and name are stored on the following attributes:
+* ['skynet']['kubernetes']['master']['certificate_data_bag_info']
+* ['skynet']['kubernetes']['master']['certificate_data_bag_info']
+* ['skynet']['kubernetes']['master']['certificate_data_bag_info']
+
+The data bag needs should contain the following keys with the value being the certificate data transformed in Base64:
+* kube.server.cert = server certificate for the api & etcd
+* kube.server.key
+* kube.proxy.client.cert = client certificate for the kube-proxy
+* kube.proxy.client.key
+* ca.cert
+* ca.key
 
 ## Usage
 

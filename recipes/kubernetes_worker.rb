@@ -11,6 +11,53 @@ yum_package 'kubernetes-worker-elq' do
   action :install
 end
 
+if node['skynet']['kubernetes']['worker']['certificate_data_bag_info'].empty?
+  Chef::Log.info("No certificate information is set for the worker - Skipping certificate rendering on this node")
+else
+  certificate_data_bag_info = node['skynet']['kubernetes']['worker']['certificate_data_bag_info']
+  ca_cert_data = certificate_data_bag_info.select{ |cert_data| cert_data[:key] == 'ca.cert'}
+  kube_proxy_client_cert_data = certificate_data_bag_info.select{ |cert_data| cert_data[:key] == 'kube.proxy.client.cert'}
+  kube_proxy_client_cert_key_data = certificate_data_bag_info.select{ |cert_data| cert_data[:key] == 'kube.proxy.client.key'}
+  ca_certificate_base64 = Chef::EncryptedDataBagItem.load(ca_cert_data.first['dbag_name'], ca_cert_data.first['dbag_item'])['ca.cert']
+  kube_proxy_client_certificate_base64 = Chef::EncryptedDataBagItem.load(kube_proxy_client_cert_data.first['dbag_name'], kube_proxy_client_cert_data.first['dbag_item'])['kube.proxy.client.cert']
+  kube_proxy_client_certificate_key_base64 = Chef::EncryptedDataBagItem.load(kube_proxy_client_cert_key_data.first['dbag_name'], kube_proxy_client_cert_key_data.first['dbag_item'])['kube.proxy.client.key']
+  token_data_bag_info = node['skynet']['kubernetes']['master']['token_data_bag_info']
+  bootstrap_token = Chef::EncryptedDataBagItem.load(token_data_bag_info.keys.first,token_data_bag_info[token_data_bag_info.keys.first])['token_mappings'].first['token']
+
+  if node['skynet']['kubernetes']['worker']['api-endpoints'].empty?
+    Chef::Log.info("No attribute set for node['skynet']['kubernetes']['worker']['api-endpoints']")
+    Chef::Log.info("Leveraging search for tags:#{node['skynet']['kubernetes']['master']['api']['chef-tag']} and chef_environment:#{node[:environment]}")
+    api_servers = search(:node, 'tags:eloqua-sky-master')
+    log("apiserver:#{api_servers}")
+    api_endpoints=[]
+    api_servers.each do |server|
+      log("server.fqdn:#{server['fqdn']}")
+      api_endpoints.push("https://#{server['fqdn']}:#{node['skynet']['kubernetes']['master']['api']['secure-port']}")
+    end
+    log("api_endpoints:#{api_endpoints}")
+  else
+   api_endpoints = node['skynet']['kubernetes']['worker']['api-endpoints']
+  end
+  template '/var/lib/kubelet/kubeconfig.bootstrap.test' do
+    owner node['skynet']['kubernetes']['user']
+    group node['skynet']['kubernetes']['group']
+    source 'default/var/lib/kubelet/kubeconfig.bootstrap.erb'
+    mode '0700'
+    helpers(Skynet::SkynetHelper)
+    cookbook 'skynet'
+    variables(:ca_certificate_base64 => ca_certificate_base64, :cluster_name => node['skynet']['kubernetes']['master']['cmanager']['cluster-name'], :bootstrap_token => bootstrap_token, :servers => api_endpoints)
+  end
+  template '/var/lib/kube-proxy/kubeconfig.kube-proxy.test' do
+    owner node['skynet']['kubernetes']['user']
+    group node['skynet']['kubernetes']['group']
+    source 'default/var/lib/kube-proxy/kubeconfig.kube-proxy.erb'
+    mode '0700'
+    helpers(Skynet::SkynetHelper)
+    cookbook 'skynet'
+    variables(:ca_certificate_base64 => ca_certificate_base64, :cluster_name => node['skynet']['kubernetes']['master']['cmanager']['cluster-name'], :servers => api_endpoints, :kube_proxy_client_certificate_base64 => kube_proxy_client_certificate_base64, :kube_proxy_client_certificate_key_base64 => kube_proxy_client_certificate_key_base64)
+  end
+end
+
 # render kubeconfigs for kubelet (bootstrap only) and kube-proxy
 if node['skynet']['kubernetes']['worker']['kubeconfig_data_bag_info'].empty?
  Chef::Log.fatal("No kubeconfig data bag information is set for the worker - Check the attribute configuration")
@@ -111,7 +158,7 @@ end
 
 
 service 'flanneld' do
-  action :nothing
+  action :enable
 end
 
 template "/etc/systemd/system/flanneld.service" do

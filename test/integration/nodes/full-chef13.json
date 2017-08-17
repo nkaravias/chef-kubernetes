@@ -1,0 +1,11 @@
+{
+  "name": "full-chef13",
+  "normal": {
+    "tags": [
+      "eloqua-sky-master"
+    ]
+  },
+  "default": {
+    "fqdn": "default-chef12"
+  }
+}

@@ -49,6 +49,7 @@
               }
             ],
        "api": {
+         "chef-tag": "eloqua-sky-master",
          "admission-control":"NamespaceLifecycle,LimitRanger,ServiceAccount,DefaultStorageClass,ResourceQuota",
          "authorization-mode":"RBAC",
          "client-ca-file": "/etc/kubernetes/sky-ca.pem",
