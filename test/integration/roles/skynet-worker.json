@@ -6,67 +6,6 @@
     "skynet": {
       "kubernetes": {
         "worker": {
-          "version": "1.7.3-1",
-          "kubeconfig_data_bag_info": [
-            {
-              "key": "kubeconfig_base64",
-              "dbag_name": "skynet",
-              "dbag_item": "kubeconfig_bootstrap",
-              "path": "/var/lib/kubelet/kubeconfig.bootstrap"
-            },
-            {
-              "key": "kubeconfig_base64",
-              "dbag_name": "skynet",
-              "dbag_item": "kubeconfig_kube_proxy",
-              "path": "/var/lib/kube-proxy/kubeconfig.kube-proxy"
-            }
-          ],
-          "certificate_data_bag_info": [
-            {
-              "key":"kube.proxy.client.cert",
-              "dbag_name":"certificates",
-              "dbag_item":"skynet_kitchen",
-              "path":"/var/lib/kube-proxy/sky-kube-proxy.pem"
-            },
-            {
-              "key":"kube.proxy.client.key",
-              "dbag_name":"certificates",
-              "dbag_item":"skynet_kitchen",
-              "path":"/var/lib/kube-proxy/sky-kube-proxy-key.pem"
-            },
-            {
-              "key":"ca.cert",
-              "dbag_name":"certificates",
-              "dbag_item":"skynet_kitchen",
-              "path":"/var/lib/kubernetes/sky-ca.pem"
-            },
-            {
-              "key":"ca.cert",
-              "dbag_name":"certificates",
-              "dbag_item":"skynet_kitchen",
-              "path":"/usr/share/pki/ca-trust-source/sky-ca.pem"
-            },
-            {
-              "key":"ca.cert",
-              "dbag_name":"certificates",
-              "dbag_item":"skynet_kitchen",
-              "path":"/etc/pki/ca-trust/source/anchors/sky-ca.pem"
-            }
-          ],
-          "kubelet": {
-            "network-plugin-mtu": 1450
-          },
-          "kube-proxy": {
-            "cluster-cidr":"172.16.128.0/17"
-          },
-          "flanneld": {
-            "version":"0.7.1-1",
-            "etcd_uri":"https://default-chef12:2379",
-            "etcd_key":"/skynet/kitchen/network"
-          },
-          "cni": {
-            "version": "0.5.2-1"
-          }
      }
     }
   },

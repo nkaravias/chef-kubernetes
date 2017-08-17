@@ -5,37 +5,6 @@
   "default_attributes": {
     "skynet": {
       "etcd": {
-        "version": "3.2.1-1",
-        "certificate_data_bag_info": [
-          {
-            "key":"kube.server.cert",
-            "dbag_name":"certificates",
-            "dbag_item":"skynet_kitchen",
-            "path":"/etc/etcd/kubernetes.pem"
-          },
-          {
-            "key":"kube.server.key",
-            "dbag_name":"certificates",
-            "dbag_item":"skynet_kitchen",
-            "path":"/etc/etcd/kubernetes-key.pem"
-          },
-          {
-            "key":"ca.cert",
-            "dbag_name":"certificates",
-            "dbag_item":"skynet_kitchen",
-            "path":"/etc/etcd/sky-ca.pem"
-          }
-        ],
-        "tls_enabled":true,
-        "cert-file":"/etc/etcd/kubernetes.pem",
-        "key-file":"/etc/etcd/kubernetes-key.pem",
-        "peer-cert-file":"/etc/etcd/kubernetes.pem",
-        "peer-key-file":"/etc/etcd/kubernetes-key.pem",
-        "trusted-ca-file":"/etc/etcd/sky-ca.pem",
-        "peer-client-cert-auth":"",
-        "client-cert-auth":"",
-        "peer-trusted-ca-file":"/etc/etcd/sky-ca.pem",
-        "initial-cluster":"default-chef12=https://default-chef12:2380"
       }
     }
   },

@@ -11,8 +11,9 @@ yum_package 'kubernetes-worker-elq' do
   action :install
 end
 
+# render kubeconfigs for kubelet (bootstrap only) and kube-proxy
 if node['skynet']['kubernetes']['worker']['certificate_data_bag_info'].empty?
-  Chef::Log.info("No certificate information is set for the worker - Skipping certificate rendering on this node")
+  Chef::Log.info("No certificate information is set for the worker - Skipping certificate kubeconfig rendering on this node")
 else
   certificate_data_bag_info = node['skynet']['kubernetes']['worker']['certificate_data_bag_info']
   ca_cert_data = certificate_data_bag_info.select{ |cert_data| cert_data[:key] == 'ca.cert'}
@@ -28,13 +29,10 @@ else
     Chef::Log.info("No attribute set for node['skynet']['kubernetes']['worker']['api-endpoints']")
     Chef::Log.info("Leveraging search for tags:#{node['skynet']['kubernetes']['master']['api']['chef-tag']} and chef_environment:#{node[:environment]}")
     api_servers = search(:node, 'tags:eloqua-sky-master')
-    log("apiserver:#{api_servers}")
     api_endpoints=[]
     api_servers.each do |server|
-      log("server.fqdn:#{server['fqdn']}")
       api_endpoints.push("https://#{server['fqdn']}:#{node['skynet']['kubernetes']['master']['api']['secure-port']}")
     end
-    log("api_endpoints:#{api_endpoints}")
   else
    api_endpoints = node['skynet']['kubernetes']['worker']['api-endpoints']
   end
@@ -55,28 +53,6 @@ else
     helpers(Skynet::SkynetHelper)
     cookbook 'skynet'
     variables(:ca_certificate_base64 => ca_certificate_base64, :cluster_name => node['skynet']['kubernetes']['master']['cmanager']['cluster-name'], :servers => api_endpoints, :kube_proxy_client_certificate_base64 => kube_proxy_client_certificate_base64, :kube_proxy_client_certificate_key_base64 => kube_proxy_client_certificate_key_base64)
-  end
-end
-
-# render kubeconfigs for kubelet (bootstrap only) and kube-proxy
-if node['skynet']['kubernetes']['worker']['kubeconfig_data_bag_info'].empty?
- Chef::Log.fatal("No kubeconfig data bag information is set for the worker - Check the attribute configuration")
- raise "node['skynet']['kubernetes']['worker']['kubeconfig_data_bag_info'] is empty"
-else
-  node['skynet']['kubernetes']['worker']['kubeconfig_data_bag_info'].each do |kubeconfig|
-    dbag = kubeconfig['dbag_name']
-    dbag_item = kubeconfig['dbag_item']
-    dbag_key = kubeconfig['key']
-    cert_path = kubeconfig['path']
-    Chef::Log.info("Attempting to load #{dbag}::#{dbag_item}::#{dbag_key} for the worker node")
-    dbag_obj = Chef::EncryptedDataBagItem.load(dbag, dbag_item)
-    file dbag_key do
-      path cert_path
-      owner node['skynet']['kubernetes']['user']
-      group node['skynet']['kubernetes']['group']
-      mode '0700'
-      content Base64.decode64(dbag_obj[dbag_key])
-    end
   end
 end
 
