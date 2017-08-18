@@ -36,7 +36,7 @@ else
   else
    api_endpoints = node['skynet']['kubernetes']['worker']['api-endpoints']
   end
-  template '/var/lib/kubelet/kubeconfig.bootstrap.test' do
+  template '/var/lib/kubelet/kubeconfig.bootstrap' do
     owner node['skynet']['kubernetes']['user']
     group node['skynet']['kubernetes']['group']
     source 'default/var/lib/kubelet/kubeconfig.bootstrap.erb'
@@ -45,7 +45,7 @@ else
     cookbook 'skynet'
     variables(:ca_certificate_base64 => ca_certificate_base64, :cluster_name => node['skynet']['kubernetes']['master']['cmanager']['cluster-name'], :bootstrap_token => bootstrap_token, :servers => api_endpoints)
   end
-  template '/var/lib/kube-proxy/kubeconfig.kube-proxy.test' do
+  template '/var/lib/kube-proxy/kubeconfig.kube-proxy' do
     owner node['skynet']['kubernetes']['user']
     group node['skynet']['kubernetes']['group']
     source 'default/var/lib/kube-proxy/kubeconfig.kube-proxy.erb'

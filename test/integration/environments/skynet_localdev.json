@@ -6,14 +6,159 @@
    "json_class":"Chef::Environment",
    "chef_type":"environment",
    "default_attributes":{
-      "java":{
-         "install_flavor":"oracle",
-         "jdk_version":"8",
-         "oracle":{
-            "accept_oracle_download_terms":true
-         }
-      },
-      "omc_logstash": {
+      "skynet": {
+        "etcd": {
+          "version": "3.2.1-1",
+          "certificate_data_bag_info": [
+            {
+              "key":"kube.server.cert",
+              "dbag_name":"certificates",
+              "dbag_item":"skynet_kitchen",
+              "path":"/etc/etcd/sky-kubernetes.pem"
+            },
+            {
+              "key":"kube.server.key",
+              "dbag_name":"certificates",
+              "dbag_item":"skynet_kitchen",
+              "path":"/etc/etcd/sky-kubernetes-key.pem"
+            },
+            {
+              "key":"ca.cert",
+              "dbag_name":"certificates",
+              "dbag_item":"skynet_kitchen",
+              "path":"/etc/etcd/sky-ca.pem"
+            }
+          ],
+          "tls_enabled":true,
+          "cert-file":"/etc/etcd/sky-kubernetes.pem",
+          "key-file":"/etc/etcd/sky-kubernetes-key.pem",
+          "peer-cert-file":"/etc/etcd/sky-kubernetes.pem",
+          "peer-key-file":"/etc/etcd/sky-kubernetes-key.pem",
+          "trusted-ca-file":"/etc/etcd/sky-ca.pem",
+          "peer-client-cert-auth":"",
+          "client-cert-auth":"",
+          "peer-trusted-ca-file":"/etc/etcd/sky-ca.pem",
+          "listen-peer-urls": "https://127.0.0.1:2380",
+          "listen-client-urls": "https://127.0.0.1:2379",
+          "initial-cluster":"default-chef12=https://default-chef12:2380"          
+        },
+        "kubernetes": {
+          "master": {
+          "version": "1.7.3-1",
+          "token_data_bag_info": {
+            "skynet": "token_kitchen"
+          },
+            "certificate_data_bag_info": [
+              {
+          "key":"kube.server.cert",
+          "dbag_name":"certificates",
+          "dbag_item":"skynet_kitchen",
+          "path":"/etc/kubernetes/sky-kubernetes.pem"
+              },
+              {
+          "key":"kube.server.key",
+          "dbag_name":"certificates",
+          "dbag_item":"skynet_kitchen",
+          "path":"/etc/kubernetes/sky-kubernetes-key.pem"
+              },
+              {
+          "key":"ca.cert",
+          "dbag_name":"certificates",
+          "dbag_item":"skynet_kitchen",
+          "path":"/etc/kubernetes/sky-ca.pem"
+              },
+              {
+          "key":"ca.key",
+          "dbag_name":"certificates",
+          "dbag_item":"skynet_kitchen",
+          "path":"/etc/kubernetes/sky-ca-key.pem"
+              },
+              {
+          "key":"ca.cert",
+          "dbag_name":"certificates",
+          "dbag_item":"skynet_kitchen",
+          "path":"/usr/share/pki/ca-trust-source/sky-ca.pem"
+              },
+              {
+          "key":"ca.cert",
+          "dbag_name":"certificates",
+          "dbag_item":"skynet_kitchen",
+          "path":"/etc/pki/ca-trust/source/anchors/sky-ca.pem"
+              }
+            ],
+       "api": {
+         "chef-tag": "eloqua-sky-master",
+         "admission-control":"NamespaceLifecycle,LimitRanger,ServiceAccount,DefaultStorageClass,ResourceQuota",
+         "authorization-mode":"RBAC",
+         "client-ca-file": "/etc/kubernetes/sky-ca.pem",
+         "etcd-cafile": "/etc/kubernetes/sky-ca.pem",
+         "etcd-certfile": "/etc/kubernetes/sky-kubernetes.pem",
+         "etcd-keyfile": "/etc/kubernetes/sky-kubernetes-key.pem",
+         "experimental-bootstrap-token-auth": "",
+         "kubelet-certificate-authority": "/etc/kubernetes/sky-ca.pem",
+         "kubelet-client-certificate": "/etc/kubernetes/sky-kubernetes.pem",
+         "kubelet-client-key": "/etc/kubernetes/sky-kubernetes-key.pem",
+         "kubelet-https": true,
+         "runtime-config": "rbac.authorization.k8s.io/v1beta1",
+         "token-auth-file":"/var/lib/kubernetes/token.csv",
+         "service-cluster-ip-range":"172.16.0.0/17"
+       },
+      "cmanager": {
+        "cluster-cidr":"172.16.128.0/17",
+        "node-cidr-mask-size": 25,
+        "service-cluster-ip-range":"172.16.0.0/17"
+      }            
+          },
+          "worker": {
+          "version": "1.7.3-1",
+          "certificate_data_bag_info": [
+            {
+              "key":"kube.proxy.client.cert",
+              "dbag_name":"certificates",
+              "dbag_item":"skynet_kitchen",
+              "path":"/var/lib/kube-proxy/sky-kube-proxy.pem"
+            },
+            {
+              "key":"kube.proxy.client.key",
+              "dbag_name":"certificates",
+              "dbag_item":"skynet_kitchen",
+              "path":"/var/lib/kube-proxy/sky-kube-proxy-key.pem"
+            },
+            {
+              "key":"ca.cert",
+              "dbag_name":"certificates",
+              "dbag_item":"skynet_kitchen",
+              "path":"/var/lib/kubernetes/sky-ca.pem"
+            },
+            {
+              "key":"ca.cert",
+              "dbag_name":"certificates",
+              "dbag_item":"skynet_kitchen",
+              "path":"/usr/share/pki/ca-trust-source/sky-ca.pem"
+            },
+            {
+              "key":"ca.cert",
+              "dbag_name":"certificates",
+              "dbag_item":"skynet_kitchen",
+              "path":"/etc/pki/ca-trust/source/anchors/sky-ca.pem"
+            }
+          ],
+          "kubelet": {
+            "network-plugin-mtu": 1450
+          },
+          "kube-proxy": {
+            "cluster-cidr":"172.16.128.0/17"
+          },
+          "flanneld": {
+            "version":"0.7.1-1",
+            "etcd_uri":"https://default-chef12:2379",
+            "etcd_key":"/skynet/kitchen/network"
+          },
+          "cni": {
+            "version": "0.5.2-1"
+          }          
+          }
+        }
       }
    },
    "override_attributes":{

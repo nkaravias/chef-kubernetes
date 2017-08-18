@@ -90,9 +90,9 @@ suites:
       - recipe[skynet::kubectl]
       #- recipe[skynet::trust_ca]
       - role[prometheus-exporter]
-      - role[skynet-etcd-kitchen]
-      - role[skynet-master]
-      - role[skynet-worker]
+      #- role[skynet-etcd-kitchen]
+      #- role[skynet-master]
+      #- role[skynet-worker]
     verifier:
       inspec_tests:
         - path: test/integration/default/etcd/default_spec.rb

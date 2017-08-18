@@ -5,7 +5,7 @@
       "eloqua-sky-master"
     ]
   },
-  "default": {
+  "automatic": {
     "fqdn": "default-chef12"
   }
 }
